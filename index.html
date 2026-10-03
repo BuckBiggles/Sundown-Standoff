@@ -398,12 +398,12 @@ const TOWNS = [
     signs: [['SALOON', 'BARBER', 'BANK', 'ASSAY OFFICE', 'HOTEL', 'LIVERY', 'GUNSMITH'], ['GENERAL STORE', 'SHERIFF', 'UNDERTAKER', 'TELEGRAPH', 'DRY GOODS', 'BLACKSMITH', 'CHURCH']],
     bounties: [
       { id: 'pete', name: 'Dusty Pete Hollis', alias: 'Cattle thief, mostly harmless', tier: 1, reward: 50, react: 950, acc: .35, side: 0, fakes: 0, ...L(0x7a5634, 0x4a3b2c, 0x6b5236, 0x8c2f24, 0xc99a74) },
-      { id: 'kate', name: 'Calico Kate Morrow', alias: 'Robbed the Tucson stage twice', tier: 2, reward: 120, react: 800, acc: .5, side: 0, fakes: 1, ...L(0x6d3b3b, 0x3d3a46, 0x2c2622, 0xd8c9a0, 0xd8a884, 'bowler') },
+      { id: 'kate', fem: true, hair: 0x7a3a1e, name: 'Calico Kate Morrow', alias: 'Robbed the Tucson stage twice', tier: 2, reward: 120, react: 800, acc: .5, side: 0, fakes: 1, ...L(0x6d3b3b, 0x3d3a46, 0x2c2622, 0xd8c9a0, 0xd8a884, 'bowler') },
       { id: 'hollis', name: 'The Hollis Cousins', alias: 'Abe and Zeke. Pete\'s kin, and sore about it.', tier: 2, reward: 200, fakes: 1, gang: [
         { name: 'Abe Hollis', react: 1000, acc: .35, side: 0, ...L(0x6a5038, 0x3e3226, 0x5a4630, 0x8c2f24, 0xc49a74) },
         { name: 'Zeke Hollis', react: 1150, acc: .3, side: 0, ...L(0x5a6a48, 0x403428, 0x7a6246, 0x2f4a6a, 0xd0a07a, 'stetson') }] },
     ],
-    boss: { id: 'ruth', name: 'Rattlesnake Ruth', alias: 'Horse thief and worse. Takes two body shots to drop.', tier: 4, reward: 600, react: 620, acc: .7, side: .5, fakes: 2, hp: 2, ...L(0x8a6a3c, 0x3a2e22, 0x6e5a3a, 0x2f6a4a, 0xc4936a, 'stetson') },
+    boss: { id: 'ruth', fem: true, hair: 0x2a1a10, name: 'Rattlesnake Ruth', alias: 'Horse thief and worse. Takes two body shots to drop.', tier: 4, reward: 600, react: 620, acc: .7, side: .5, fakes: 2, hp: 2, ...L(0x8a6a3c, 0x3a2e22, 0x6e5a3a, 0x2f6a4a, 0xc4936a, 'stetson') },
   },
   {
     id: 'mesa', name: 'Red Mesa', time: 'Dusk', est: 1872, blurb: 'Copper-mining town under red cliffs. The money is better, and so are the guns.',
@@ -414,7 +414,7 @@ const TOWNS = [
     bounties: [
       { id: 'jack', name: 'One-Eye Jack Tully', alias: 'Bank robber. Sidesteps when he draws.', tier: 4, reward: 350, react: 650, acc: .6, side: .45, fakes: 1, ...L(0x3e4a3a, 0x2f2a24, 0x1f1b18, 0x1f3a5a, 0xb98863) },
       { id: 'penny', name: 'Bad Penny & Cole Dawes', alias: 'Married outlaws. They always turn up together.', tier: 5, reward: 550, fakes: 2, gang: [
-        { name: 'Bad Penny', react: 700, acc: .55, side: .3, ...L(0x5a2a3a, 0x2e2830, 0x2a2228, 0xd8c9a0, 0xd8a884, 'bowler') },
+        { name: 'Bad Penny', fem: true, hair: 0x5a3020, react: 700, acc: .55, side: .3, ...L(0x5a2a3a, 0x2e2830, 0x2a2228, 0xd8c9a0, 0xd8a884, 'bowler') },
         { name: 'Cole Dawes', react: 760, acc: .5, side: .3, ...L(0x6a5a40, 0x3a3026, 0x4a3a2a, 0x6a1414, 0xb48460) }] },
       { id: 'mendes', name: 'Lucky Lou Mendes', alias: 'Card sharp. Never stands still.', tier: 5, reward: 650, react: 570, acc: .68, side: .75, fakes: 2, ...L(0x2a4a5a, 0x3a3026, 0xc8a86a, 0x8c2f24, 0xb07a52, 'sombrero') },
     ],
@@ -431,9 +431,9 @@ const TOWNS = [
       { id: 'varga', name: 'The Varga Twins', alias: 'Identical, and identically fast.', tier: 8, reward: 1300, fakes: 3, gang: [
         { name: 'Mateo Varga', react: 520, acc: .72, side: .4, ...L(0x2a2a3a, 0x1e1e26, 0x1a1a20, 0xa82a2a, 0xb07a52, 'sombrero') },
         { name: 'Tomas Varga', react: 560, acc: .72, side: .4, ...L(0x2a2a3a, 0x1e1e26, 0x1a1a20, 0x2a6aa8, 0xb07a52, 'sombrero') }] },
-      { id: 'widow', name: 'The Widow Blackwood', alias: 'Buried three husbands. Shot all three.', tier: 8, reward: 1400, react: 440, acc: .85, side: .8, fakes: 3, ...L(0x141214, 0x141214, 0x0e0c0e, 0x4a1a3a, 0xe0cdb5, 'bowler') },
+      { id: 'widow', fem: true, hair: 0x0e0c0e, name: 'The Widow Blackwood', alias: 'Buried three husbands. Shot all three.', tier: 8, reward: 1400, react: 440, acc: .85, side: .8, fakes: 3, ...L(0x141214, 0x141214, 0x0e0c0e, 0x4a1a3a, 0xe0cdb5, 'bowler') },
     ],
-    boss: { id: 'rider', name: 'The Pale Rider', alias: 'Name unknown. Never missed. Takes two body shots to drop.', tier: 9, reward: 4000, react: 400, acc: .9, side: .8, fakes: 3, hp: 2, ...L(0xb9b1a0, 0x8a8378, 0xd8d2c4, 0x2a2a2a, 0xe0cdb5, 'stetson') },
+    boss: { id: 'rider', hair: 0xd8d2c4, beard: true, name: 'The Pale Rider', alias: 'Name unknown. Never missed. Takes two body shots to drop.', tier: 9, reward: 4000, react: 400, acc: .9, side: .8, fakes: 3, hp: 2, ...L(0xb9b1a0, 0x8a8378, 0xd8d2c4, 0x2a2a2a, 0xe0cdb5, 'stetson') },
   },
 ];
 const BOUNTIES = {};
@@ -899,34 +899,97 @@ function addHat(hat, shape, hatM, dark, add) {
     add(cyl(.158, .158, .035, 16), dark, 0, .03, 0, 'hat', hat);
   }
 }
+// A gunfighter about 1.8 m tall, facing +z with feet at the origin.
+// Every mesh is tagged with the hit zone it belongs to: head, body, limb or hat.
+const HAIR = [0x2a1a10, 0x4a2e1a, 0x6a4a2a, 0x1a1410, 0x7a5a36];
+const nameHash = s => [...String(s || '')].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
 function makeOutlaw(o) {
   const g = new THREE.Group();
-  const coat = lam(o.coat), pants = lam(o.pants), skin = lam(o.skin), hatM = lam(o.hat), dark = lam(0x1a1410), band = lam(o.band), steel = lam(0x2a2a2e);
+  const hsh = nameHash(o.name);
+  const M = (c, extra) => new THREE.MeshLambertMaterial({ color: c, ...extra });
+  const coat = M(o.coat), coatOpen = M(o.coat, { side: THREE.DoubleSide }), lapel = M(new THREE.Color(o.coat).multiplyScalar(.72));
+  const pants = M(o.pants), skin = M(o.skin), hatM = M(o.hat), band = M(o.band);
+  const shirt = M(o.shirt || [0xd8cdb4, 0xb8b0a0, 0x9a7a5a, 0x7a8a9a][hsh % 4]);
+  const hair = M(o.hair || HAIR[hsh % HAIR.length]);
+  const leather = M(0x4a2c18), boot = M(0x241810), brass = M(0xc9a03a), steel = M(0x26262a), grip = M(0x5a3418), eyeM = M(0x120e0c), dark = M(0x1a1410);
   const add = (geo, mat, x, y, z, part, parent = g) => { const m = mesh(geo, mat, x, y, z, parent); m.userData.part = part; return m; };
-  add(box(.17, .86, .19), pants, -.11, .43, 0, 'limb');
-  add(box(.17, .86, .19), pants, .11, .43, 0, 'limb');
-  add(box(.19, .1, .3), dark, -.11, .05, .04, 'limb');
-  add(box(.19, .1, .3), dark, .11, .05, .04, 'limb');
-  add(box(.52, .62, .3), coat, 0, 1.17, 0, 'body');
-  add(box(.58, .4, .33), coat, 0, .78, -.01, 'body');
-  add(box(.56, .07, .34), dark, 0, .93, 0, 'body');
-  add(box(.1, .2, .12), dark, -.31, .82, .02, 'body');
-  add(cyl(.06, .07, .1, 8), skin, 0, 1.53, 0, 'head');
-  add(new THREE.SphereGeometry(.13, 14, 10), skin, 0, 1.66, 0, 'head');
-  add(box(.21, .09, .07), band, 0, 1.6, .1, 'head');
+  const S = (r, w = 16, h = 12) => new THREE.SphereGeometry(r, w, h);
+
+  // Legs hang from hip pivots so they can swing when walking.
+  const legs = [-1, 1].map(s => {
+    const leg = new THREE.Group(); leg.position.set(s * .1, .93, 0); g.add(leg);
+    add(cyl(.085, .068, .44, 12), pants, 0, -.22, 0, 'limb', leg);
+    add(S(.066), pants, 0, -.45, .005, 'limb', leg);
+    add(cyl(.064, .052, .36, 12), pants, 0, -.62, 0, 'limb', leg);
+    add(cyl(.068, .074, .22, 12), boot, 0, -.79, 0, 'limb', leg);
+    add(box(.1, .07, .2), boot, 0, -.895, .05, 'limb', leg);
+    add(S(.05, 12, 8), boot, 0, -.9, .14, 'limb', leg).scale.set(1, .7, 1);
+    add(box(.08, .04, .06), dark, 0, -.91, -.06, 'limb', leg);   // heel
+    return leg;
+  });
+
+  // Torso: hips, chest, open coat with the shirt showing, belt and holster. Grouped so it can breathe.
+  const chest = new THREE.Group(); g.add(chest);
+  add(cyl(.17, .165, .16, 16), pants, 0, .96, 0, 'body', chest).scale.z = .75;
+  add(cyl(.2, .165, .46, 16), coat, 0, 1.2, 0, 'body', chest).scale.z = .64;
+  add(box(.13, .42, .02), shirt, 0, 1.22, .118, 'body', chest);
+  for (const s of [-1, 1]) {
+    const lp = add(box(.05, .26, .02), lapel, s * .075, 1.3, .124, 'body', chest); lp.rotation.z = s * .22;
+    add(S(.085), coat, s * .2, 1.4, 0, 'body', chest).scale.set(1, .85, .9);   // shoulders
+  }
+  add(cyl(.177, .177, .05, 16), leather, 0, 1.0, 0, 'body', chest).scale.z = .7;
+  add(box(.06, .045, .02), brass, 0, 1.0, .125, 'body', chest);
+  add(box(.07, .17, .055), leather, -.2, .87, .02, 'body', chest);   // holster on the gun hip
+  // The duster's skirt wraps the sides and back, open at the front so the legs show.
+  const skirt = add(new THREE.CylinderGeometry(.19, .25, .5, 18, 1, true, Math.PI * .3, Math.PI * 1.4), coatOpen, 0, .73, 0, 'limb', chest);
+  skirt.scale.z = .82;
+
+  // Neck, neckerchief and head.
+  add(cyl(.052, .062, .1, 10), skin, 0, 1.52, 0, 'head');
+  add(cyl(.072, .078, .045, 12), band, 0, 1.495, 0, 'head');
+  add(new THREE.ConeGeometry(.06, .09, 4), band, 0, 1.45, .06, 'head').rotation.set(Math.PI, Math.PI / 4, 0);
+  const head = new THREE.Group(); head.position.set(0, 1.64, 0); g.add(head);
+  add(S(.112, 20, 16), skin, 0, 0, 0, 'head', head).scale.set(1, 1.14, 1.05);
+  add(S(.078), skin, 0, -.06, .035, 'head', head).scale.set(1, .8, 1);        // jaw
+  add(box(.026, .048, .04), skin, 0, -.005, .118, 'head', head).rotation.x = -.25;   // nose
+  for (const s of [-1, 1]) {
+    add(S(.028, 10, 8), skin, s * .112, 0, -.005, 'head', head).scale.set(.45, 1, .75);   // ears
+    add(S(.013, 8, 6), eyeM, s * .04, .028, .104, 'head', head);                         // eyes
+    add(box(.042, .01, .012), hair, s * .041, .053, .108, 'head', head).rotation.z = -s * .12;   // brows
+  }
+  add(S(.116, 18, 12), hair, 0, .02, -.016, 'head', head).scale.set(1.02, 1.04, 1.04);   // hair under the hat
+  if (o.fem) {
+    add(box(.22, .3, .07), hair, 0, -.14, -.075, 'head', head);
+    for (const s of [-1, 1]) add(box(.05, .22, .09), hair, s * .1, -.1, -.02, 'head', head);
+  } else {
+    if (o.beard || hsh % 3 === 0) add(S(.08), hair, 0, -.075, .045, 'head', head).scale.set(1.05, .85, .8);
+    if (hsh % 3 !== 2) add(box(.085, .018, .02), hair, 0, -.042, .108, 'head', head);   // mustache
+  }
+
   const hat = new THREE.Group(); hat.position.set(0, 1.77, 0); g.add(hat);
   addHat(hat, o.hatShape || 'drifter', hatM, dark, add);
   hat.rotation.x = -.06;
-  const armL = new THREE.Group(); armL.position.set(.33, 1.44, 0); armL.rotation.z = .14; g.add(armL);
-  add(box(.13, .62, .14), coat, 0, -.3, 0, 'limb', armL);
-  add(box(.1, .1, .1), skin, 0, -.65, 0, 'limb', armL);
-  const armR = new THREE.Group(); armR.position.set(-.33, 1.44, 0); armR.rotation.z = -.14; g.add(armR);
-  add(box(.13, .62, .14), coat, 0, -.3, 0, 'limb', armR);
-  add(box(.1, .1, .1), skin, 0, -.65, 0, 'limb', armR);
-  const gunPivot = new THREE.Group(); gunPivot.position.set(0, -.66, 0); armR.add(gunPivot);
-  add(box(.04, .26, .05), steel, 0, -.14, .01, 'limb', gunPivot);
+
+  // Arms hang from shoulder pivots. The gun arm is the outlaw's right, at -x.
+  const arm = s => {
+    const a = new THREE.Group(); a.position.set(s * .25, 1.42, 0); a.rotation.z = s * .1; g.add(a);
+    add(cyl(.055, .048, .29, 10), coat, 0, -.145, 0, 'limb', a);
+    add(S(.05, 10, 8), coat, 0, -.3, 0, 'limb', a);
+    add(cyl(.048, .042, .25, 10), coat, 0, -.42, 0, 'limb', a);
+    add(cyl(.05, .05, .035, 10), shirt, 0, -.555, 0, 'limb', a);
+    add(S(.042, 10, 8), skin, 0, -.6, .005, 'limb', a).scale.set(.85, 1.2, .65);
+    return a;
+  };
+  const armL = arm(1), armR = arm(-1);
+  // Revolver in the right hand, barrel down along the arm until drawn.
+  const gunPivot = new THREE.Group(); gunPivot.position.set(0, -.62, 0); armR.add(gunPivot);
+  add(box(.028, .06, .04), grip, 0, .02, -.01, 'limb', gunPivot).rotation.x = .3;
+  add(box(.03, .07, .03), steel, 0, -.04, .005, 'limb', gunPivot);
+  add(cyl(.02, .02, .045, 10), steel, 0, -.05, .006, 'limb', gunPivot);
+  add(cyl(.009, .009, .16, 8), steel, 0, -.16, .012, 'limb', gunPivot);
+
   g.traverse(m => { if (m.isMesh) m.receiveShadow = false; });
-  return { g, armR, armL, hat, gunPivot };
+  return { g, armR, armL, hat, gunPivot, legs, chest, head };
 }
 function clearOutlaws() { for (const o of outs) scene.remove(o.g); outs = []; out = null; }
 
@@ -1158,7 +1221,7 @@ function win() {
 function outlawFire(o) {
   const t = gt - drawT0;
   if (o.firedAt === null) o.firedAt = t;
-  const p = o.armR.localToWorld(new THREE.Vector3(0, -.95, 0));
+  const p = o.armR.localToWorld(new THREE.Vector3(0, -.86, 0));
   oFlash.position.copy(p); oFlash.visible = true; oFlashT = .06;
   puff(p, 0xbfb0a0, 4, .4, .3, .8, .5, 0, .5);
   sfx.shot(false);
@@ -1194,12 +1257,27 @@ function reload() {
 }
 
 /* ---------------- Screens ---------------- */
+// Engraving-style head-and-shoulders likeness, using the same looks as the 3D model.
 function portrait(o, w = 150) {
-  return `<svg viewBox="0 0 120 110" width="${w}" aria-hidden="true"><rect width="120" height="110" fill="#cdb27c"/>
-  <path d="M12 110 C16 84 40 76 60 76 C80 76 104 84 108 110Z" fill="${hex(o.coat)}"/>
-  <rect x="53" y="62" width="14" height="16" fill="#4a3424"/>
-  <ellipse cx="60" cy="53" rx="15" ry="18" fill="#5a3f2a"/>
-  <path d="M44 57 L76 57 L60 75 Z" fill="${hex(o.band)}"/>
+  const ink = '#1a120c', h = nameHash(o.name);
+  const skinC = hex(o.skin != null ? o.skin : 0xc8a080), hairC = hex(o.hair != null ? o.hair : HAIR[h % HAIR.length]), coatC = hex(o.coat);
+  const beard = !o.fem && (o.beard || h % 3 === 0), stache = !o.fem && h % 3 !== 2;
+  return `<svg viewBox="0 0 120 110" width="${w}" aria-hidden="true"><rect width="120" height="110" fill="#d9c9a4"/>
+  ${o.fem ? `<path d="M40 48 C37 80 43 92 48 97 L72 97 C77 92 83 80 80 48Z" fill="${hairC}"/>` : ''}
+  <path d="M10 110 C14 86 36 78 60 78 C84 78 106 86 110 110Z" fill="${coatC}" stroke="${ink}" stroke-opacity=".5"/>
+  <path d="M50 79 L60 101 L70 79Z" fill="#e8dcc0"/>
+  <path d="M47 80 L58 106 L50 110 L36 84Z M73 80 L62 106 L70 110 L84 84Z" fill="${coatC}" stroke="${ink}" stroke-opacity=".55"/>
+  <rect x="53" y="64" width="14" height="16" fill="${skinC}"/>
+  <path d="M47 74 L73 74 L60 91Z" fill="${hex(o.band)}" stroke="${ink}" stroke-opacity=".4"/>
+  <ellipse cx="44" cy="55" rx="4" ry="6" fill="${skinC}" stroke="${ink}" stroke-opacity=".35"/>
+  <ellipse cx="76" cy="55" rx="4" ry="6" fill="${skinC}" stroke="${ink}" stroke-opacity=".35"/>
+  <ellipse cx="60" cy="54" rx="16" ry="19" fill="${skinC}" stroke="${ink}" stroke-opacity=".4"/>
+  <path d="M44 47 C46 35 74 35 76 47 C70 41 50 41 44 47Z" fill="${hairC}"/>
+  <path d="M50 49.5 L56 48.5 M64 48.5 L70 49.5" stroke="${ink}" stroke-width="1.7" stroke-linecap="round"/>
+  <ellipse cx="53" cy="54" rx="1.9" ry="1.5" fill="${ink}"/><ellipse cx="67" cy="54" rx="1.9" ry="1.5" fill="${ink}"/>
+  <path d="M60 55 L58 63 L61.5 64" fill="none" stroke="${ink}" stroke-width="1.3" stroke-opacity=".75"/>
+  ${beard ? `<path d="M44.5 60 C45.5 77 54 81 60 81 C66 81 74.5 77 75.5 60 C70 71 50 71 44.5 60Z" fill="${hairC}"/>` : ''}
+  ${stache ? `<path d="M51 67.5 C55 64 65 64 69 67.5 C64 69 56 69 51 67.5Z" fill="${hairC}"/>` : `<path d="M55 68.5 Q60 70.5 65 68.5" fill="none" stroke="${ink}" stroke-width="1.1"/>`}
   ${hatSvg(o.hatShape, hex(o.hat))}</svg>`;
 }
 function hatSvg(shape, col) {
@@ -1209,7 +1287,7 @@ function hatSvg(shape, col) {
   if (shape === 'stetson') return `<ellipse cx="60" cy="39" rx="42" ry="6" fill="${col}" ${s}/><path d="M42 39 C42 18 48 9 60 12 C72 9 78 18 78 39Z" fill="${col}" ${s}/><rect x="42.5" y="31" width="35" height="4" fill="#1a120c" opacity=".55"/>`;
   return `<ellipse cx="60" cy="39" rx="37" ry="6" fill="${col}" ${s}/><path d="M43 39 C43 22 48 15 60 15 C72 15 77 22 77 39Z" fill="${col}" ${s}/><rect x="43.5" y="32" width="33" height="4" fill="#1a120c" opacity=".55"/>`;
 }
-const shadowLook = { coat: 0x2a1a10, band: 0x2a1a10, hat: 0x2a1a10, hatShape: 'stetson' };
+const shadowLook = { coat: 0x2a1a10, band: 0x2a1a10, hat: 0x2a1a10, skin: 0x2a1a10, hair: 0x2a1a10, hatShape: 'stetson', name: 'unknown' };
 function portraits(b, w) {
   if (!b.gang) return `<span class="portrait">${portrait(b, w)}</span>`;
   return `<span class="portrait pair">${b.gang.map(m => portrait(m, Math.round(w * .62))).join('')}</span>`;
@@ -1900,7 +1978,7 @@ function oppShotFx(d, peer) {
   if (net.fx.has(key)) return;
   net.fx.add(key);
   if (d.early) { say(cur.name + ' drew early.', 'The round is yours.', '', 1500); return; }
-  const p = out.armR.localToWorld(new THREE.Vector3(0, -.95, 0));
+  const p = out.armR.localToWorld(new THREE.Vector3(0, -.86, 0));
   oFlash.position.copy(p); oFlash.visible = true; oFlashT = .06;
   puff(p, 0xbfb0a0, 4, .4, .3, .8, .5, 0, .5);
   sfx.shot(false);
@@ -1982,7 +2060,7 @@ function applyResult(d) {
     say(d.reason === 'early' ? cur.name + ' drew early.' : (d.head ? 'Clean shot.' : cur.name + ' is down.'), '', '', 1800);
   } else {
     if (d.reason === 'early') {
-      const p = out.armR.localToWorld(new THREE.Vector3(0, -.95, 0));
+      const p = out.armR.localToWorld(new THREE.Vector3(0, -.86, 0));
       oFlash.position.copy(p); oFlash.visible = true; oFlashT = .06; sfx.shot(false);
     }
     playerDie(d.reason === 'shot' && !!d.head);
@@ -2174,14 +2252,26 @@ function updateOutlaw(o, dt) {
   if (!o.drawing && state === 'standoff') {
     o.armR.rotation.z = -.14 + Math.sin(gt * .006 + o.base) * .025 * (gt > standoffEnd - 1500 ? 2 : 1);
   }
+  // Walking out: legs stride and the free arm swings against them. Standing: settle, breathe, watch you.
+  const walking = state === 'walk' && o.alive, phase = gt * .0042 + o.base;
+  const stride = walking ? Math.sin(phase) * .48 : 0;
+  for (const [i, leg] of o.legs.entries()) leg.rotation.x += ((i ? -stride : stride) - leg.rotation.x) * Math.min(1, dt * 12);
+  o.armL.rotation.x += ((walking ? -stride * .7 : 0) - o.armL.rotation.x) * Math.min(1, dt * 12);
+  if (o.alive) {
+    const b = Math.sin(gt * .0032 + o.base * 3) * .014;
+    o.chest.scale.set(1 + b, 1, 1 + b * 1.4);
+    o.head.rotation.x = Math.sin(gt * .0011 + o.base) * .035 - dk * .08;
+    o.head.rotation.z = Math.sin(gt * .0007 + o.base * 2) * .03;
+  }
   o.stagger *= Math.exp(-dt * 5);
   g.rotation.z = Math.sin(gt * .03) * o.stagger;
   if (!o.alive) {
     const k = clamp((gt - o.fallT) / 650, 0, 1);
     g.rotation.x = -k * k * 1.52;
     o.armR.rotation.x *= .92;
-  } else if (state === 'walk') {
-    g.position.y = Math.abs(Math.sin(gt * .008 + o.base)) * .04;
+    o.head.rotation.x += (.35 - o.head.rotation.x) * Math.min(1, dt * 4);   // chin drops as they go down
+  } else if (walking) {
+    g.position.y = Math.abs(Math.sin(phase * 2)) * .035;
   } else g.position.y = 0;
 }
 // Victory twirl: two turns of the revolver around the trigger finger, then it goes back in the holster.
@@ -2315,7 +2405,7 @@ function frame(now) {
 }
 
 // Test hook, only on a local dev server.
-if (location.hostname === 'localhost') window.__sd = { scene, camera, envGroup, get outs() { return outs; }, get state() { return state; } };
+if (location.hostname === 'localhost') window.__sd = { scene, camera, envGroup, renderer, makeOutlaw, BOUNTIES, get outs() { return outs; }, get state() { return state; } };
 applySky(TOWNS[save.town]);
 showTitle();
 const fontsReady = document.fonts && document.fonts.load
