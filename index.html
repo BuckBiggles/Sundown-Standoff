@@ -1027,7 +1027,9 @@ function joinPeerDuel(code, create) {
       else errHandlers.slice().forEach(f => f(e));
     };
     const done = () => { if (!settled) { settled = true; clearTimeout(timer); resolve(api); } };
-    const timer = setTimeout(() => fail({ code: create ? 'server-error' : 'peer-unavailable' }), 15000);
+    // Timing out after the duel was found means the two browsers couldn't reach each other directly.
+    let dialing = false;
+    const timer = setTimeout(() => fail({ code: create ? 'server-error' : (dialing ? 'no-direct' : 'server-error') }), 15000);
 
     const peersList = () => {
       const list = [{ peer: peer.id, by: null, isMe: true, sameTab: true, kind: 'viewer', guest: false, presence: myPresence }];
@@ -1061,6 +1063,7 @@ function joinPeerDuel(code, create) {
     peer = create ? new Peer(hostId) : new Peer();
     peer.on('open', () => {
       if (create) { done(); return; }
+      dialing = true;
       const c = peer.connect(hostId, { reliable: true });
       c.on('open', () => { attach(c); done(); });
     });
@@ -1108,7 +1111,8 @@ function joinPeerDuel(code, create) {
 function peerErrorText(e) {
   const c = e && e.code;
   if (c === 'no_lib') return 'Couldn\'t load the connection library. Check your internet connection and reload the page.';
-  if (c === 'peer-unavailable') return 'No duel is waiting with that code. Check the code, and make sure your friend\'s waiting screen is still open.';
+  if (c === 'peer-unavailable') return 'No duel is waiting with that code. Check the code, make sure your friend\'s waiting screen is still open, and that you\'re both on the same site (claude.ai codes don\'t work here).';
+  if (c === 'no-direct') return 'Found the duel, but your two connections couldn\'t reach each other directly. This happens on some mobile, school and work networks. Try switching one of you to a different network, such as home Wi-Fi instead of mobile data.';
   if (c === 'full') return 'That duel already has two players. Start a new one.';
   if (c === 'browser-incompatible') return 'This browser can\'t make direct connections. Try a recent Chrome, Firefox, Edge or Safari.';
   return 'Couldn\'t reach the matchmaking service. Try again in a moment.';
