@@ -202,17 +202,49 @@ body.tense .bar{height:11vh}
 .town-row .tp{font-family:var(--type);font-size:13px;color:var(--brass-hi);white-space:nowrap}
 .town-row .tt{grid-column:1 / -1;font-size:15px;line-height:1.35;opacity:.9}
 
-/* General Store */
-.shop{display:flex;flex-direction:column;gap:18px;text-align:left}
-.shop h3{margin:0 0 6px;padding-bottom:4px;border-bottom:1px dashed rgba(239,220,176,.3);font-family:var(--display);font-weight:400;font-size:18px;color:var(--brass-hi)}
-.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:center;padding:6px 0}
-.item .in{display:flex;align-items:center;gap:8px;font-family:var(--display);font-size:16px}
-.item .id{grid-column:1;font-size:14px;line-height:1.35;opacity:.82}
-.item .brass-btn,.item .tag{grid-row:1 / span 2;grid-column:2;justify-self:end}
-.item .tag{font-family:var(--type);font-size:13px;color:var(--brass-hi);padding:6px 4px}
+/* General Store: a mail-order catalogue, one page at a time, with a page-turn animation */
 .brass-btn[disabled]{filter:grayscale(.7) brightness(.75);cursor:not-allowed}
-.swatch{display:inline-block;width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.5), 0 0 0 1px rgba(239,220,176,.4)}
-.hat-ico{width:40px;height:auto;flex:none}
+.book{position:relative;width:100%;perspective:1600px;margin-top:14px}
+.page{position:relative;box-sizing:border-box;min-height:480px;padding:24px 20px 40px 30px;color:var(--ink);text-align:left;font-family:var(--serif);
+  background:linear-gradient(90deg, rgba(70,40,15,.3), rgba(70,40,15,0) 24px), radial-gradient(ellipse at 60% 40%, #f7ead0 0%, #ecdcb4 60%, #d8be8c 100%);
+  border-radius:2px 8px 8px 2px;
+  box-shadow:1px 1px 0 #cdb588, 2px 2px 0 #b49a6a, 3px 3px 0 #cdb588, 4px 4px 0 #a88a5a, 5px 5px 0 #c4aa7a, 0 18px 40px rgba(0,0,0,.6)}
+.page.leaf{position:absolute;inset:0;z-index:2;transform-origin:left center;backface-visibility:hidden;will-change:transform}
+.page.leaf.away{animation:leafAway .5s cubic-bezier(.45,0,.6,1) forwards}
+.page.leaf.back{animation:leafBack .5s cubic-bezier(.3,0,.5,1) forwards}
+@keyframes leafAway{from{transform:rotateY(0)}to{transform:rotateY(-105deg);filter:brightness(.6)}}
+@keyframes leafBack{from{transform:rotateY(-105deg);filter:brightness(.6)}to{transform:rotateY(0)}}
+.page p{margin:0}
+.cat-eyebrow{font-family:var(--type);font-size:11px;letter-spacing:.16em;text-transform:uppercase;text-align:center;opacity:.75}
+.cat-title{margin:6px 0 4px;padding-block:6px;border-block:3px double var(--ink);font-family:var(--display);font-weight:400;font-size:clamp(26px,7vw,34px);line-height:1.05;text-align:center;text-wrap:balance}
+.cat-sub{font-style:italic;font-size:15px;line-height:1.35;text-align:center;margin-bottom:8px!important}
+.wares{display:flex;flex-direction:column}
+.ware{display:grid;grid-template-columns:70px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px dotted rgba(42,26,16,.45)}
+.ware:last-child{border-bottom:0}
+.ware-pic svg{display:block;width:70px;height:auto;max-height:64px}
+.ware-text{min-width:0}
+.ware-name{font-family:var(--display);font-size:17px;line-height:1.1}
+.ware-desc{font-size:14px;line-height:1.35;margin-top:3px!important}
+.ware-buy{display:flex;flex-direction:column;align-items:flex-end;gap:5px;text-align:right}
+.price{font-family:var(--type);font-size:15px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.order{padding:5px 12px;border:2px solid var(--ink);background:transparent;color:var(--ink);font-family:var(--display);font-size:14px;letter-spacing:.04em;cursor:pointer}
+.order:hover:not([disabled]){background:var(--ink);color:var(--parchment)}
+.order[disabled]{opacity:.45;cursor:not-allowed}
+.order:focus-visible{outline:3px solid var(--blood);outline-offset:2px}
+.got{padding:2px 6px;border:2px solid var(--blood);color:var(--blood);font-family:var(--type);font-size:11px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;transform:rotate(-4deg)}
+.short{font-size:12px;font-style:italic;line-height:1.25;opacity:.75;max-width:9em}
+.contents{list-style:none;padding:0;margin:10px 0 16px}
+.toc{display:flex;align-items:baseline;gap:8px;width:100%;padding:9px 2px;border:0;background:none;color:var(--ink);font-family:var(--display);font-size:19px;text-align:left;cursor:pointer}
+.toc .dots{flex:1;border-bottom:2px dotted rgba(42,26,16,.5);transform:translateY(-4px)}
+.toc:hover{color:var(--blood)}
+.toc:focus-visible{outline:2px solid var(--blood)}
+.fine{font-size:13px;line-height:1.4;font-style:italic;opacity:.8}
+.page .linkish{color:var(--ink)}
+.page-foot{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-family:var(--type);font-size:12px;opacity:.6}
+.flip{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin-top:14px}
+.folio-n{font-family:var(--type);font-size:13px;color:var(--parchment);text-shadow:0 1px 2px #000}
+.store-msg{min-height:1.3em;margin-top:8px!important;color:var(--parchment);text-align:center;text-shadow:0 1px 2px #000}
+@media (prefers-reduced-motion: reduce){ .page.leaf{display:none} }
 .erase{margin-top:16px;text-align:center}
 .linkish{background:none;border:0;padding:4px;color:var(--parchment);opacity:.7;font-family:var(--serif);font-style:italic;font-size:14px;text-decoration:underline;cursor:pointer}
 .linkish:focus-visible{outline:2px solid var(--brass-hi)}
@@ -492,6 +524,10 @@ const sfx = (() => {
       for (let k = 0; k < 5; k++) tone(2400 + Math.random() * 400, .02, 'square', .025, t + .05 + k * .14);
     },
     holster() { if (ok()) { const t = ac.currentTime; noise(.18, 'lowpass', 520, 1, .32, t); tone(140, .08, 'sine', .15, t + .03); } },
+    page() {  // a catalogue page turning
+      if (!ok()) return; const t = ac.currentTime;
+      noise(.22, 'bandpass', 2600, 1.1, .1, t, 1100); noise(.1, 'highpass', 4200, .7, .05, t + .12);
+    },
     till() {  // cash-register ding for the General Store
       if (!ok()) return; const t = ac.currentTime;
       tone(1320, .5, 'sine', .18, t); tone(1980, .4, 'sine', .08, t + .02); noise(.08, 'highpass', 3000, .7, .12, t);
@@ -1162,6 +1198,7 @@ function hangSign(est, title, size = '') {
 const purse = () => `<p class="plaque slim">Purse ${money(save.cash)}</p>`;
 // Leave whatever was happening in the street and stand at the edge of town.
 function toMenu() {
+  storeOpen = false;
   if (net.duel) leaveDuel();
   mode = 'solo'; state = 'menu';
   clearOutlaws(); clearFlyers();
@@ -1296,20 +1333,19 @@ function showWin(r) {
 function showLoss() {
   setPlaying(false); vm.visible = false; say('');
   const b = cur;
-  const fee = Math.min(save.cash, Math.round(25 + save.cash * .1));
-  save.cash -= fee; persist();
   const fired = outs.map(o => o.firedAt).filter(v => v !== null);
+  const theirs = fired.length ? Math.round(Math.min(...fired)) : null;
   const why = deathCause === 'early'
     ? `You drew before the bell, and ${b.gang ? 'they' : b.name} didn't wait to be asked.`
-    : `Outdrawn by ${b.name} at ${Math.round(fired.length ? Math.min(...fired) : 0)} ms.`;
+    : `Outdrawn by ${b.name} at ${theirs} ms.`;
   showScreen(`<div class="saloon">
     <div class="board wood">
-      <p class="plaque">The doc dug the lead out</p>
-      <p class="lede">${esc(why)} You woke up on Doc Halloway's table with a bandage and a bill.</p>
+      <p class="plaque">Back on your feet</p>
+      <p class="lede">${esc(why)} You came to on Doc Halloway's table, patched up and ready to try again.</p>
       <dl class="facts">
-        <div><dt>Doctor's fee</dt><dd>${money(fee)}</dd></div>
-        <div><dt>Purse</dt><dd>${money(save.cash)}</dd></div>
+        <div><dt>Their draw</dt><dd>${theirs === null ? '—' : theirs + ' ms'}</dd></div>
         <div><dt>Bounty</dt><dd>${money(payFor(b))}</dd></div>
+        <div><dt>Purse</dt><dd>${money(save.cash)}</dd></div>
       </dl>
     </div>
     ${signs('<button class="sign-btn wood" id="go">Try again</button><button class="sign-btn wood minor" id="back">Back to the board</button><button class="sign-btn wood minor" id="store">General Store</button>')}
@@ -1318,73 +1354,186 @@ function showLoss() {
   $('store').onclick = () => showStore(() => showTown(b.town));
 }
 
-// The General Store: upgrades that carry through the campaign, plus revolvers and hats.
-function showStore(back, msg = '', keepScroll = false) {
+// The General Store: a mail-order catalogue to flip through, one department per page.
+// Holster and tonic upgrades carry through the campaign; revolvers and hats can be swapped any time.
+const CATALOG = [
+  { id: 'cover', title: 'Contents' },
+  { id: 'holster', title: 'Holsters & Rigs', sub: 'A faster draw starts at the hip. Each rig must be bought in turn.' },
+  { id: 'hands', title: 'Nerve Tonics', sub: 'For shaking hands and a pounding heart. Take as directed, in order.' },
+  { id: 'guns', title: 'Revolvers', sub: 'Six shots apiece. Handling only counts while hunting bounties.' },
+  { id: 'hats', title: 'Hats', sub: 'Worn proudly in every duel. Your friends will see it.' },
+];
+const LEATHER = [0x9a6a3c, 0x7a4a26, 0x5a321a, 0x2e1c10];
+const TONIC = [0xb88a3a, 0x6a8a3a, 0x3a6a8a, 0x8ab4c8];
+let catPage = 0, storeOpen = false;
+
+function revolverSvg(g) {
+  const len = Math.round(34 * g.barrel), w = 58 + len, st = hex(g.steel), gr = hex(g.grip), ink = '#2a1a10';
+  return `<svg viewBox="0 0 ${w} 62" aria-hidden="true">
+    <path d="M24 30 L6 54 Q4 60 11 60 L24 60 L36 34 Z" fill="${gr}" stroke="${ink}" stroke-width="1.4"/>
+    <path d="M11 56 L22 56 M13 52 L24 52" stroke="${ink}" stroke-width=".8" opacity=".5"/>
+    <path d="M24 22 L20 12 L25 11 L29 21 Z" fill="${st}" stroke="${ink}" stroke-width="1.2"/>
+    <rect x="22" y="20" width="32" height="16" rx="3" fill="${st}" stroke="${ink}" stroke-width="1.4"/>
+    <rect x="30" y="16" width="20" height="22" rx="5" fill="${st}" stroke="${ink}" stroke-width="1.4"/>
+    <path d="M35 18 V36 M40 17 V37 M45 18 V36" stroke="${ink}" stroke-width=".9" opacity=".55"/>
+    <rect x="52" y="21" width="${len}" height="7" fill="${st}" stroke="${ink}" stroke-width="1.4"/>
+    <rect x="52" y="28" width="${Math.round(len * .7)}" height="3.5" fill="${st}" stroke="${ink}" stroke-width="1"/>
+    <rect x="${52 + len - 5}" y="17.5" width="3" height="3.5" fill="${ink}"/>
+    <path d="M30 36 Q30 46 40 45 Q44 44 42 36" fill="none" stroke="${ink}" stroke-width="1.6"/>
+    <path d="M35 36 Q36 41 34 43" fill="none" stroke="${ink}" stroke-width="1.6"/></svg>`;
+}
+function holsterSvg(i) {
+  const c = hex(LEATHER[i]), ink = '#2a1a10';
+  return `<svg viewBox="0 0 70 70" aria-hidden="true">
+    <rect x="4" y="6" width="62" height="10" rx="2" fill="${hex(LEATHER[Math.max(0, i - 1)])}" stroke="${ink}" stroke-width="1.3"/>
+    ${[12, 24, 36, 48].map(x => `<rect x="${x}" y="8" width="4" height="6" rx="1" fill="#c9a03a" stroke="${ink}" stroke-width=".6"/>`).join('')}
+    <path d="M24 14 L50 14 L46 34 L44 64 Q36 68 30 64 L28 34 Z" fill="${c}" stroke="${ink}" stroke-width="1.4"/>
+    <path d="M28 34 L46 34" stroke="${ink}" stroke-width="1" opacity=".6"/>
+    <path d="M30 20 L44 20 M30 44 L43 44" stroke="#e8d4a0" stroke-width="1" stroke-dasharray="2 2" opacity=".7"/>
+    ${i >= 3 ? `<path d="M36 64 Q36 70 30 70" fill="none" stroke="${ink}" stroke-width="1.4"/>` : ''}</svg>`;
+}
+function tonicSvg(i) {
+  const c = hex(TONIC[i]), ink = '#2a1a10';
+  return `<svg viewBox="0 0 70 70" aria-hidden="true">
+    <rect x="29" y="2" width="12" height="9" rx="2" fill="#a07a50" stroke="${ink}" stroke-width="1.2"/>
+    <path d="M30 11 L40 11 L40 20 Q54 24 54 36 L54 62 Q54 67 49 67 L21 67 Q16 67 16 62 L16 36 Q16 24 30 20 Z" fill="${c}" fill-opacity=".75" stroke="${ink}" stroke-width="1.4"/>
+    <rect x="20" y="38" width="30" height="18" fill="#f2e4c4" stroke="${ink}" stroke-width="1"/>
+    <path d="M24 44 H46 M24 48 H42 M24 52 H44" stroke="${ink}" stroke-width=".9" opacity=".6"/>
+    <path d="M22 28 Q24 24 28 23" fill="none" stroke="#fff" stroke-width="1.6" opacity=".5"/></svg>`;
+}
+function hatPicSvg(h) {
+  return `<svg viewBox="0 0 120 54" aria-hidden="true"><g transform="translate(0,-2)">${hatSvg(h.shape, hex(h.color))}</g></svg>`;
+}
+
+// One row in the catalogue: picture, name and blurb, then price and the order button or a stamp.
+function ware(pic, name, desc, price, action) {
+  return `<div class="ware"><div class="ware-pic">${pic}</div>
+    <div class="ware-text"><p class="ware-name">${name}</p><p class="ware-desc">${esc(desc)}</p></div>
+    <div class="ware-buy">${price}${action}</div></div>`;
+}
+const priceTag = cost => `<p class="price">${cost ? money(cost) + '.00' : 'Standard issue'}</p>`;
+const stamp = text => `<span class="got">${text}</span>`;
+function orderBtn(attr, cost) {
+  const short = save.cash < cost;
+  return `<button class="order" ${attr}${short ? ' disabled' : ''}>Order</button>${short ? `<span class="short">Short ${money(cost - save.cash)}</span>` : ''}`;
+}
+
+function catalogPage(i) {
+  const p = CATALOG[i];
+  const head = `<p class="cat-eyebrow">${esc(TOWNS[save.town].name)} General Store · Catalogue No. 79</p>
+    <h3 class="cat-title">${p.id === 'cover' ? 'Outfitters\' Catalogue' : esc(p.title)}</h3>`;
+  const foot = `<p class="page-foot">${i === 0 ? '' : `— ${i} —`}</p>`;
+  if (p.id === 'cover') {
+    return `${head}<p class="cat-sub">Goods for the travelling bounty hunter. Prices fixed. No credit given.</p>
+      <ol class="contents">${CATALOG.slice(1).map((c, k) => `<li><button class="toc" data-go="${k + 1}"><span>${esc(c.title)}</span><span class="dots"></span><span>${k + 1}</span></button></li>`).join('')}</ol>
+      <p class="fine">Holsters, tonics and revolver handling only count while hunting bounties, so duels with friends stay even.</p>
+      <div class="erase" id="erase"><button class="linkish" id="erase-ask">Start the campaign over</button></div>${foot}`;
+  }
+  let rows = '';
+  if (p.id === 'holster' || p.id === 'hands') {
+    const list = p.id === 'holster' ? HOLSTERS : HANDS, lv = save[p.id];
+    rows = list.map((it, k) => {
+      const pic = p.id === 'holster' ? holsterSvg(k) : tonicSvg(k);
+      const act = k <= lv ? stamp(k === lv ? 'In use' : 'Owned')
+        : k === lv + 1 ? orderBtn(`data-buy="${p.id}"`, it.cost) : '<span class="short">Order the one above first</span>';
+      return ware(pic, it.name, it.desc, priceTag(it.cost), act);
+    }).join('');
+  } else if (p.id === 'guns') {
+    rows = Object.entries(GUNS).map(([id, g]) => {
+      const own = save.guns.includes(id);
+      const act = save.gun === id ? stamp('In your holster') : own ? `<button class="order" data-gun="${id}">Carry</button>` : orderBtn(`data-gun="${id}"`, g.cost);
+      return ware(revolverSvg(g), g.name, g.desc, priceTag(g.cost), act);
+    }).join('');
+  } else {
+    rows = Object.entries(HATS).map(([id, h]) => {
+      const own = save.hats.includes(id);
+      const act = save.hat === id ? stamp('Wearing') : own ? `<button class="order" data-hat="${id}">Wear</button>` : orderBtn(`data-hat="${id}"`, h.cost);
+      return ware(hatPicSvg(h), h.name, h.desc, priceTag(h.cost), act);
+    }).join('');
+  }
+  return `${head}<p class="cat-sub">${esc(p.sub)}</p><div class="wares">${rows}</div>${foot}`;
+}
+
+function showStore(back) {
   toMenu();
-  const scroll = keepScroll ? overlay.scrollTop : 0;
-  const ladder = (key, list, title) => {
-    const lv = save[key], now = list[lv], next = list[lv + 1];
-    return `<section><h3>${title}</h3>
-      <div class="item"><span class="in">${now.name}</span><span class="id">${esc(now.desc)}</span><span class="tag">Owned</span></div>
-      ${next ? `<div class="item"><span class="in">${next.name}</span><span class="id">${esc(next.desc)}</span>
-        <button class="brass-btn" data-buy="${key}"${save.cash < next.cost ? ' disabled' : ''}>${money(next.cost)}</button></div>` : '<p class="small">Fully upgraded.</p>'}
-    </section>`;
-  };
-  const gunRows = Object.entries(GUNS).map(([id, g]) => {
-    const own = save.guns.includes(id), on = save.gun === id;
-    const btn = on ? '<span class="tag">Carrying</span>' : own ? `<button class="brass-btn" data-gun="${id}">Carry</button>`
-      : `<button class="brass-btn" data-gun="${id}"${save.cash < g.cost ? ' disabled' : ''}>${money(g.cost)}</button>`;
-    return `<div class="item"><span class="in"><i class="swatch" style="background:${hex(g.steel)}"></i>${g.name}</span><span class="id">${esc(g.desc)}</span>${btn}</div>`;
-  }).join('');
-  const hatRows = Object.entries(HATS).map(([id, h]) => {
-    const own = save.hats.includes(id), on = save.hat === id;
-    const btn = on ? '<span class="tag">Wearing</span>' : own ? `<button class="brass-btn" data-hat="${id}">Wear</button>`
-      : `<button class="brass-btn" data-hat="${id}"${save.cash < h.cost ? ' disabled' : ''}>${money(h.cost)}</button>`;
-    return `<div class="item"><span class="in"><svg class="hat-ico" viewBox="0 0 120 50" aria-hidden="true"><g transform="translate(0,-4)">${hatSvg(h.shape, hex(h.color))}</g></svg>${h.name}</span><span class="id">${esc(h.desc)}</span>${btn}</div>`;
-  }).join('');
+  catPage = clamp(catPage, 0, CATALOG.length - 1);
   showScreen(`<div class="saloon">
     ${hangSign('Guns · Leather · Hats', 'General Store', 'clamp(36px,10vw,56px)')}
-    <div class="board wood">
-      <p class="plaque">Purse ${money(save.cash)}</p>
-      <p class="small" id="storemsg" style="min-height:1.2em;margin-bottom:8px">${esc(msg)}</p>
-      <div class="shop">
-        ${ladder('holster', HOLSTERS, 'Holster')}
-        ${ladder('hands', HANDS, 'Nerves')}
-        <section><h3>Revolvers</h3>${gunRows}</section>
-        <section><h3>Hats</h3><p class="small" style="margin-bottom:4px">Your friends see your hat when you duel them.</p>${hatRows}</section>
-      </div>
-      <p class="small" style="margin-top:14px">Holsters, nerves and revolver handling only count when hunting bounties, so duels with friends stay even.</p>
-      <div class="erase" id="erase"><button class="linkish" id="erase-ask">Start the campaign over</button></div>
-    </div>
-    ${signs('<button class="sign-btn wood" id="go">Back</button>')}
-  </div>`, 'go', back);
-  overlay.scrollTop = scroll;
-  const done = (text) => { sfx.till(); persist(); showStore(back, text, true); };
-  overlay.querySelectorAll('[data-buy]').forEach(b => b.onclick = () => {
+    <p class="plaque slim" id="purse" style="margin-top:14px!important">Purse ${money(save.cash)}</p>
+    <div class="book" id="book"><div class="page" id="page"></div></div>
+    <div class="flip"><button class="brass-btn" id="prevp">‹ Previous</button><span class="folio-n" id="folio"></span><button class="brass-btn" id="nextp">Next ›</button></div>
+    <p class="small store-msg" id="storemsg" aria-live="polite"></p>
+    ${signs('<button class="sign-btn wood" id="go">Leave the store</button>')}
+  </div>`, 'go', () => { storeOpen = false; back(); });
+  storeOpen = true;
+  $('prevp').onclick = () => turnTo(catPage - 1);
+  $('nextp').onclick = () => turnTo(catPage + 1);
+  drawPage();
+}
+function storeNote(text) { $('storemsg').textContent = text; $('purse').textContent = 'Purse ' + money(save.cash); }
+function drawPage() {
+  const page = $('page');
+  if (!page) return;
+  page.innerHTML = catalogPage(catPage);
+  $('folio').textContent = catPage === 0 ? 'Contents' : `Page ${catPage} of ${CATALOG.length - 1}`;
+  $('prevp').disabled = catPage === 0;
+  $('nextp').disabled = catPage === CATALOG.length - 1;
+  page.querySelectorAll('[data-go]').forEach(b => b.onclick = () => turnTo(+b.dataset.go));
+  page.querySelectorAll('[data-buy]').forEach(b => b.onclick = () => {
     const key = b.dataset.buy, list = key === 'holster' ? HOLSTERS : HANDS, next = list[save[key] + 1];
     if (!next || save.cash < next.cost) return;
-    save.cash -= next.cost; save[key]++; done(`Bought: ${next.name}.`);
+    save.cash -= next.cost; save[key]++; bought(`Bought: ${next.name}.`);
   });
-  overlay.querySelectorAll('[data-gun]').forEach(b => b.onclick = () => {
+  page.querySelectorAll('[data-gun]').forEach(b => b.onclick = () => {
     const id = b.dataset.gun, g = GUNS[id];
-    if (!save.guns.includes(id)) { if (save.cash < g.cost) return; save.cash -= g.cost; save.guns.push(id); save.gun = id; done(`Bought the ${g.name}. It's in your holster.`); }
-    else { save.gun = id; persist(); showStore(back, `Carrying the ${g.name}.`, true); }
+    if (!save.guns.includes(id)) { if (save.cash < g.cost) return; save.cash -= g.cost; save.guns.push(id); save.gun = id; bought(`Bought the ${g.name}. It's in your holster.`); }
+    else { save.gun = id; persist(); drawPage(); storeNote(`Carrying the ${g.name}.`); }
   });
-  overlay.querySelectorAll('[data-hat]').forEach(b => b.onclick = () => {
+  page.querySelectorAll('[data-hat]').forEach(b => b.onclick = () => {
     const id = b.dataset.hat, h = HATS[id];
-    if (!save.hats.includes(id)) { if (save.cash < h.cost) return; save.cash -= h.cost; save.hats.push(id); save.hat = id; done(`Bought the ${h.name}. Looks good on you.`); }
-    else { save.hat = id; persist(); showStore(back, `Wearing the ${h.name}.`, true); }
+    if (!save.hats.includes(id)) { if (save.cash < h.cost) return; save.cash -= h.cost; save.hats.push(id); save.hat = id; bought(`Bought the ${h.name}. Looks good on you.`); }
+    else { save.hat = id; persist(); drawPage(); storeNote(`Wearing the ${h.name}.`); }
   });
-  $('erase-ask').onclick = () => {
-    $('erase').innerHTML = `<p class="small">Erase your purse, upgrades and every paid bounty?</p>
-      <div class="row" style="justify-content:center;margin-top:6px"><button class="brass-btn" id="erase-yes">Erase everything</button><button class="brass-btn" id="erase-no">Keep my progress</button></div>`;
-    $('erase-no').onclick = () => showStore(back, '', true);
+  const ask = $('erase-ask');
+  if (ask) ask.onclick = () => {
+    $('erase').innerHTML = `<p class="small">Erase your purse, gear and every paid bounty?</p>
+      <div class="row" style="justify-content:center;margin-top:6px"><button class="order" id="erase-yes">Erase everything</button><button class="order" id="erase-no">Keep my progress</button></div>`;
+    $('erase-no').onclick = drawPage;
     $('erase-yes').onclick = () => {
       Object.assign(save, { cash: 0, done: {}, holster: 0, hands: 0, guns: ['colt'], gun: 'colt', hats: ['drifter'], hat: 'drifter', fastest: null, town: 0 });
-      persist(); showStore(back, 'Fresh start. Dry Gulch is waiting.');
+      persist(); drawPage(); storeNote('Fresh start. Dry Gulch is waiting.');
     };
     try { $('erase-no').focus(); } catch (e) { }
   };
+}
+function bought(text) { sfx.till(); persist(); drawPage(); storeNote(text); }
+// Turn to a page: forward pages lift away to the left; going back, the earlier page swings in over the top.
+function turnTo(to) {
+  const book = $('book');
+  if (!book || to < 0 || to >= CATALOG.length || to === catPage || book.querySelector('.leaf')) return;
+  sfx.page();
+  const forward = to > catPage;
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) { catPage = to; drawPage(); return; }
+  // Finish on the animation's end, or after a moment anyway (a hidden tab never ends its animations).
+  const settle = (leaf, then) => {
+    let done = false;
+    const finish = () => { if (done) return; done = true; if (then) then(); leaf.remove(); };
+    leaf.addEventListener('animationend', finish, { once: true });
+    setTimeout(finish, 650);
+  };
+  if (forward) {
+    const leaf = $('page').cloneNode(true);
+    leaf.removeAttribute('id'); leaf.classList.add('leaf', 'away');
+    book.appendChild(leaf);
+    catPage = to; drawPage();
+    settle(leaf);
+  } else {
+    const leaf = document.createElement('div');
+    leaf.className = 'page leaf back'; leaf.innerHTML = catalogPage(to);
+    book.appendChild(leaf);
+    settle(leaf, () => { catPage = to; drawPage(); });
+  }
 }
 
 /* ---------------- Live duels ----------------
@@ -1919,6 +2068,9 @@ window.addEventListener('keyup', e => { moveKey(e.code, false); });
 window.addEventListener('blur', () => { held.left = held.right = false; });
 window.addEventListener('keydown', e => {
   const typing = e.target && e.target.tagName === 'INPUT';
+  if (storeOpen && !overlay.hidden && !typing && (e.code === 'ArrowLeft' || e.code === 'ArrowRight')) {
+    e.preventDefault(); turnTo(catPage + (e.code === 'ArrowRight' ? 1 : -1)); return;
+  }
   if (!typing && moveKey(e.code, true) && mode === 'pvp' && active()) e.preventDefault();
   if (!overlay.hidden || paused) return;
   if (e.code === 'KeyR') reload();
