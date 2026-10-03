@@ -927,11 +927,16 @@ function showTitle() {
       <p class="lede">Six outlaws ride into town before dark. Face them one at a time. Wait for the bell, then draw.</p>
       <ul class="keys"><li><kbd>Mouse</kbd>aim</li><li><kbd>Click</kbd>draw &amp; fire</li><li><kbd>R</kbd>reload</li><li><kbd>Esc</kbd>pause</li></ul>
       <p class="small">On a phone, drag to aim and tap to fire.</p>
+      <div class="volume" style="margin-top:14px">
+        <label class="field" for="ambience-title">Wind &amp; ambience</label>
+        <div class="row" style="align-items:center"><input type="range" id="ambience-title" class="slider" min="0" max="100" step="1"><output id="ambience-title-val" for="ambience-title">100%</output></div>
+      </div>
       ${best ? `<p class="plaque slim">Best bounty ${money(best)}</p>` : ''}
     </div>
     ${signs('<button class="sign-btn wood" id="go">Ride alone</button><button class="sign-btn wood" id="pvp">Duel a friend</button>')}
   </div>`, 'go', () => { sfx.init(); round = 0; bounty = 0; kills = 0; runBest = null; showPoster(); });
   $('pvp').onclick = () => { sfx.init(); showDuelLobby(); };
+  wireAmbience($('ambience-title'), $('ambience-title-val'));
 }
 // A wooden beam with the screen's buttons hanging from it on chains.
 function signs(buttons) { return `<div class="rail wood"></div><div class="signs">${buttons}</div>`; }
@@ -1454,6 +1459,7 @@ function pause() {
   if (paused) return;
   paused = true; pauseReal = performance.now();
   $('pausenote').textContent = mode === 'pvp' ? 'Your friend\'s clock is still running.' : (state === 'standoff' ? 'The standoff resumes where it left off.' : '');
+  wireAmbience($('ambience'), $('ambienceval'));  // pick up any change made on the title screen
   $('pause').hidden = false;
 }
 function resume() {
@@ -1478,17 +1484,18 @@ $('quit').onclick = () => {
   slowEnd = 0; clearFlyers();
   showTitle();  // also leaves a live duel
 };
-(() => {
-  const s = $('ambience'), outEl = $('ambienceval');
+// Wind & ambience sliders (title screen and pause menu) share one saved setting.
+function wireAmbience(s, outEl) {
   const show = v => { outEl.textContent = v + '%'; s.style.setProperty('--fill', v + '%'); };
   const v0 = Math.round(sfx.getAmbience() * 100);
   s.value = v0; show(v0);
-  s.addEventListener('input', () => {
+  s.oninput = () => {
     const v = Number(s.value);
     show(v); sfx.setAmbience(v / 100);
     try { localStorage.setItem('sundown-ambience', String(v / 100)); } catch (e) { }
-  });
-})();
+  };
+}
+wireAmbience($('ambience'), $('ambienceval'));
 
 function look(dx, dy) {
   if (paused || !active()) return;
