@@ -59,6 +59,10 @@ body.tense .bar{height:11vh}
 #hud .lbl{font-family:var(--type);font-weight:700;font-size:10px;letter-spacing:.16em;text-transform:uppercase}
 #hud .val{font-family:var(--display);font-size:20px;line-height:1.1;font-variant-numeric:tabular-nums}
 #hud .val:empty::before{content:"—"}
+/* Way out of the street for phones and for browsers that won't lock the mouse */
+#pausebtn{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));right:16px;z-index:9;padding:6px 14px 7px;border:2px solid var(--ink);background:var(--paper);background-image:var(--paper-tex);color:var(--ink);font-family:var(--display);font-size:14px;cursor:pointer;box-shadow:3px 3px 0 rgba(0,0,0,.55)}
+#pausebtn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 rgba(0,0,0,.6)}
+#pausebtn:focus-visible{outline:3px dashed var(--paper-hi);outline-offset:3px}
 #gunhud{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:6;display:flex;align-items:center;gap:12px;pointer-events:none}
 #hint:not(:empty){padding:5px 10px;border:2px solid var(--ink);font-family:var(--type);font-weight:700;font-size:13px;box-shadow:3px 3px 0 rgba(0,0,0,.55)}
 #chambers{position:relative;width:64px;height:64px;border-radius:50%;background:var(--paper);border:3px solid var(--ink);box-shadow:3px 3px 0 rgba(0,0,0,.55)}
@@ -245,6 +249,7 @@ kbd{display:inline-block;min-width:1.4em;margin-right:8px;padding:1px 7px 2px;bo
   <div><span class="lbl">Purse</span><span class="val" id="bounty">$0</span></div>
   <div><span class="lbl">Reward</span><span class="val" id="duel"></span></div>
 </header>
+<button id="pausebtn" type="button" hidden>Pause</button>
 <div id="gunhud" hidden>
   <span id="hint"></span>
   <div id="chambers" aria-label="Rounds loaded"><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -929,7 +934,7 @@ function updateHud() {
   $('hint').textContent = reloading ? 'Reloading…' : (state === 'draw' && ammo < 6 ? 'R to reload' : '');
 }
 function setPlaying(on) {
-  $('hud').hidden = !on; $('gunhud').hidden = !on; $('crosshair').hidden = !on;
+  $('hud').hidden = !on; $('gunhud').hidden = !on; $('crosshair').hidden = !on; $('pausebtn').hidden = !on;
 }
 
 // Walk out into the street to face one outlaw, or a gang of two standing side by side.
@@ -1218,7 +1223,7 @@ function showTown(i) {
       <div class="posters">${[...t.bounties, t.boss].map(miniPoster).join('')}</div>
       ${purse()}
     </div>
-    ${signs('<button class="sign-btn wood" id="go">General Store</button><button class="sign-btn wood minor" id="back">Ride on</button>')}
+    ${signs('<button class="sign-btn wood" id="go">General Store</button><button class="sign-btn wood minor" id="back">Back to the map</button>')}
   </div>`, 'go', () => showStore(() => showTown(i)));
   $('back').onclick = showMap;
   overlay.querySelectorAll('.mini[data-id]').forEach(b => { b.onclick = () => showBounty(BOUNTIES[b.dataset.id]); });
@@ -1973,6 +1978,9 @@ document.addEventListener('pointerlockerror', () => {
   $('pausenote').textContent = 'Click once more to grab the mouse.';
 });
 $('resume').onclick = () => { if (lockOK) requestLock(); else resume(); };
+// The on-screen Pause button. It never takes focus, so Space keeps firing instead of pressing it.
+$('pausebtn').onmousedown = e => e.preventDefault();
+$('pausebtn').onclick = () => { exitLock(); pause(); };
 $('quit').onclick = () => {
   paused = false; $('pause').hidden = true;
   slowEnd = 0;
@@ -2020,6 +2028,11 @@ window.addEventListener('keydown', e => {
     e.preventDefault(); turnTo(catPage + (e.code === 'ArrowRight' ? 1 : -1)); return;
   }
   if (!typing && moveKey(e.code, true) && mode === 'pvp' && active()) e.preventDefault();
+  // Esc pauses even when the mouse isn't locked (with a lock, the browser's own Esc release pauses).
+  if (e.code === 'Escape' && overlay.hidden && !document.pointerLockElement) {
+    if (paused) resume(); else if (active()) pause();
+    return;
+  }
   if (!overlay.hidden || paused) return;
   if (e.code === 'KeyR') reload();
   if (e.code === 'Space') { e.preventDefault(); if (!e.repeat) playerFire(); }
