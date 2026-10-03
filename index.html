@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="A first-person western quick-draw duel. Outshoot six outlaws at dusk, or duel a friend with a code.">
+<meta name="description" content="A first-person western quick-draw game. Hunt bounties across three towns, or duel a friend with a code.">
+</head>
+<body>
 <title>Sundown Standoff</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -104,6 +106,8 @@ body.tense .bar{height:11vh}
 .plaque{position:relative;display:inline-block;max-width:100%;box-sizing:border-box;padding:9px 32px 8px;font-family:var(--display);font-size:22px;line-height:1.15;letter-spacing:.03em;color:var(--engrave);text-shadow:0 1px 0 rgba(255,244,210,.55);text-wrap:balance;
   background:var(--rivet) 8px 50%/10px 10px no-repeat, var(--rivet) calc(100% - 8px) 50%/10px 10px no-repeat, linear-gradient(180deg, var(--brass-hi), var(--brass-mid) 52%, #a77a2c 53%, var(--brass-lo));
   border-radius:3px;box-shadow:inset 0 0 0 1px rgba(255,240,190,.5), inset 0 0 0 3px rgba(80,50,15,.5), 0 3px 8px rgba(0,0,0,.55);margin-bottom:14px!important}
+.weblink{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.weblink:focus-visible{outline:2px solid var(--engrave);outline-offset:2px}
 .plaque.slim{font-size:15px;padding:6px 28px 5px;margin:14px 0 0!important}
 
 .hang{position:relative;width:100%;margin-top:46px;transform-origin:50% -46px;animation:sway 7s ease-in-out infinite}
@@ -164,7 +168,54 @@ body.tense .bar{height:11vh}
 .wanted{font-family:var(--display);font-size:clamp(46px,14vw,68px);line-height:.95;letter-spacing:.03em}
 .wanted.small{font-size:28px}
 .doa{font-family:var(--display);font-size:14px;letter-spacing:.32em;text-transform:uppercase;margin:8px 0 14px!important;border-block:2px solid var(--ink);padding-block:5px}
-.portrait svg{display:block;width:150px;height:auto;margin:0 auto;border:3px solid var(--ink);filter:sepia(.55) contrast(1.05)}
+.portrait{display:block}
+.portrait svg{display:block;height:auto;max-width:100%;margin:0 auto;border:3px solid var(--ink);filter:sepia(.55) contrast(1.05)}
+.portrait.pair{display:flex;justify-content:center;gap:6px}
+.portrait.pair svg{margin:0}
+
+/* Bounty board: small wanted posters pinned in a grid */
+.posters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 14px}
+.mini{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0;padding:14px 8px 10px;border:0;cursor:pointer;color:var(--ink);font-family:var(--serif);text-align:center;
+  background:radial-gradient(ellipse at 50% 38%, #f6e7c4 0%, var(--parchment) 55%, var(--parchment-deep) 100%);
+  box-shadow:0 6px 14px rgba(0,0,0,.5), inset 0 0 24px rgba(120,75,30,.3);transform:rotate(var(--tilt,-1deg));transition:transform .2s}
+.mini::before{content:"";position:absolute;top:5px;left:50%;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:radial-gradient(circle at 35% 35%, #bbb, #333)}
+.mini:hover:not([disabled]){transform:rotate(0deg) translateY(-3px)}
+.mini:focus-visible{outline:3px solid var(--brass-hi);outline-offset:3px}
+.mini .w{font-family:var(--display);font-size:20px;line-height:1}
+.mini .portrait svg{border-width:2px}
+.mini .n{font-family:var(--display);font-size:14px;line-height:1.15;text-wrap:balance}
+.mini .stars{font-size:12px;letter-spacing:.08em;color:#6a3a14}
+.mini .r{font-family:var(--display);font-size:16px;color:var(--blood)}
+.mini .hint{font-size:12px;line-height:1.3;opacity:.85}
+.mini .stamp{font-size:20px;padding:1px 8px;border-width:3px;top:24%;right:2%}
+.mini.locked{cursor:not-allowed;filter:saturate(.4) brightness(.78)}
+.ribbon{position:absolute;top:8px;right:-6px;padding:2px 10px;background:var(--blood);color:var(--parchment);font-family:var(--display);font-size:12px;letter-spacing:.06em;box-shadow:0 2px 4px rgba(0,0,0,.4)}
+
+/* Territory map: one plank per town */
+.towns{display:flex;flex-direction:column;gap:12px}
+.town-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:baseline;width:100%;padding:12px 16px;border:0;border-radius:4px;text-align:left;cursor:pointer;color:var(--parchment);font-family:var(--serif);
+  box-shadow:inset 0 2px 0 rgba(255,215,160,.2), inset 0 -3px 0 rgba(0,0,0,.4), inset 0 0 0 2px rgba(0,0,0,.35), 0 6px 12px rgba(0,0,0,.45);transition:filter .2s}
+.town-row:hover:not([disabled]){filter:brightness(1.14)}
+.town-row:focus-visible{outline:3px solid var(--brass-hi);outline-offset:3px}
+.town-row[disabled]{cursor:not-allowed;filter:grayscale(.6) brightness(.7)}
+.town-row .tn{font-family:var(--display);font-size:22px;color:var(--brass-hi);text-shadow:0 2px 0 rgba(0,0,0,.8)}
+.town-row .tp{font-family:var(--type);font-size:13px;color:var(--brass-hi);white-space:nowrap}
+.town-row .tt{grid-column:1 / -1;font-size:15px;line-height:1.35;opacity:.9}
+
+/* General Store */
+.shop{display:flex;flex-direction:column;gap:18px;text-align:left}
+.shop h3{margin:0 0 6px;padding-bottom:4px;border-bottom:1px dashed rgba(239,220,176,.3);font-family:var(--display);font-weight:400;font-size:18px;color:var(--brass-hi)}
+.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:center;padding:6px 0}
+.item .in{display:flex;align-items:center;gap:8px;font-family:var(--display);font-size:16px}
+.item .id{grid-column:1;font-size:14px;line-height:1.35;opacity:.82}
+.item .brass-btn,.item .tag{grid-row:1 / span 2;grid-column:2;justify-self:end}
+.item .tag{font-family:var(--type);font-size:13px;color:var(--brass-hi);padding:6px 4px}
+.brass-btn[disabled]{filter:grayscale(.7) brightness(.75);cursor:not-allowed}
+.swatch{display:inline-block;width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.5), 0 0 0 1px rgba(239,220,176,.4)}
+.hat-ico{width:40px;height:auto;flex:none}
+.erase{margin-top:16px;text-align:center}
+.linkish{background:none;border:0;padding:4px;color:var(--parchment);opacity:.7;font-family:var(--serif);font-style:italic;font-size:14px;text-decoration:underline;cursor:pointer}
+.linkish:focus-visible{outline:2px solid var(--brass-hi)}
 .poster h1{font-family:var(--display);font-weight:400;font-size:clamp(50px,14vw,78px);line-height:.92;margin:8px 0 16px;text-wrap:balance}
 .poster h2{font-family:var(--display);font-weight:400;font-size:26px;line-height:1.1;margin:14px 0 4px;text-wrap:balance}
 .alias{opacity:.8;margin-bottom:14px!important}
@@ -192,8 +243,7 @@ kbd{display:inline-block;min-width:1.4em;padding:3px 8px 2px;margin-right:8px;bo
   .sign-btn{transition:none}
 }
 </style>
-</head>
-<body>
+
 <div id="game"></div>
 <div class="bar top"></div>
 <div class="bar bottom"></div>
@@ -203,8 +253,8 @@ kbd{display:inline-block;min-width:1.4em;padding:3px 8px 2px;margin-right:8px;bo
 <div id="blackout"></div>
 <div id="crosshair" hidden></div>
 <header id="hud" hidden>
-  <div><span class="lbl">Bounty</span><span class="val" id="bounty">$0</span></div>
-  <div><span class="lbl">Duel</span><span class="val" id="duel">1</span></div>
+  <div><span class="lbl">Purse</span><span class="val" id="bounty">$0</span></div>
+  <div><span class="lbl">Reward</span><span class="val" id="duel"></span></div>
 </header>
 <div id="gunhud" hidden>
   <span id="hint"></span>
@@ -239,6 +289,9 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const ease = k => k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
 const hex = n => '#' + n.toString(16).padStart(6, '0');
 const money = n => '$' + Math.round(n).toLocaleString('en-US');
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+// On claude.ai duels use the page's live room; anywhere else (GitHub Pages) they connect peer to peer.
+const ON_CLAUDE = !!(window.claude && typeof window.claude.use === 'function');
 
 // Pine grain for the saloon boards and signs, painted once and used as a CSS background.
 (() => {
@@ -268,27 +321,116 @@ const money = n => '$' + Math.round(n).toLocaleString('en-US');
   } catch (e) { }
 })();
 
-/* ---------------- Outlaws ---------------- */
-const OUTLAWS = [
-  { name: 'Dusty Pete Hollis', alias: 'Cattle thief, mostly harmless', react: 950, acc: .35, reward: 50, side: 0, sway: .004, fakes: 0,
-    coat: 0x7a5634, pants: 0x4a3b2c, hat: 0x6b5236, band: 0x8c2f24, skin: 0xc99a74 },
-  { name: 'Calico Kate Morrow', alias: 'Robbed the Tucson stage twice', react: 780, acc: .5, reward: 150, side: 0, sway: .006, fakes: 1,
-    coat: 0x6d3b3b, pants: 0x3d3a46, hat: 0x2c2622, band: 0xd8c9a0, skin: 0xd8a884 },
-  { name: 'One-Eye Jack Tully', alias: 'Bank robber, sidesteps when he draws', react: 650, acc: .6, reward: 300, side: .4, sway: .008, fakes: 1,
-    coat: 0x3e4a3a, pants: 0x2f2a24, hat: 0x1f1b18, band: 0x1f3a5a, skin: 0xb98863 },
-  { name: 'Rattlesnake Ruth', alias: 'Horse thief and worse', react: 550, acc: .7, reward: 600, side: .55, sway: .01, fakes: 2,
-    coat: 0x8a6a3c, pants: 0x3a2e22, hat: 0x6e5a3a, band: 0x2f6a4a, skin: 0xc4936a },
-  { name: 'Deacon Elias Graves', alias: 'Wanted in four territories', react: 470, acc: .8, reward: 1200, side: .7, sway: .011, fakes: 2,
-    coat: 0x1d1a1a, pants: 0x24201e, hat: 0x111010, band: 0x6a1414, skin: 0xd2b49a },
-  { name: 'The Pale Rider', alias: 'Name unknown. Never missed.', react: 400, acc: .9, reward: 3000, side: .8, sway: .012, fakes: 3,
-    coat: 0xb9b1a0, pants: 0x8a8378, hat: 0xd8d2c4, band: 0x2a2a2a, skin: 0xe0cdb5 },
+/* ---------------- Campaign: towns and their bounties ----------------
+   Each town has three regular bounties and a boss. The boss poster goes up once
+   the regular ones are paid, and paying the boss opens the next town.
+   tier (1-9) sets the nerves and the difficulty stars. */
+const L = (coat, pants, hat, band, skin, hatShape = 'drifter') => ({ coat, pants, hat, band, skin, hatShape });
+const TOWNS = [
+  {
+    id: 'gulch', name: 'Dry Gulch', time: 'Sunset', est: 1879, blurb: 'Cattle town on the edge of the flats. Small-time outlaws, big-time thirst.',
+    sky: { top: 0x2b2244, mid: 0xe38d5c }, glow: 0xffa060, disc: 0xfff2cc, stars: 0, sun: [.09, .1, -1],
+    light: 0xffa868, lightI: 1.05, hemi: [0xffd2a8, 0x5a3626, .7], fill: .28, windows: .75, sand: '#c9925e', mesa: [0x7a4450, 0x9a5a5a],
+    pal: [0x8a4a32, 0x9a8a6a, 0x7d7a70, 0xa07a4c, 0x6e4a3a, 0x8a6a48, 0x5e5448, 0xa58658, 0x7a6248, 0x4a4440, 0x8a7a5a, 0x6a5a4a, 0x5a4a3c, 0xc8bca4],
+    signs: [['SALOON', 'BARBER', 'BANK', 'ASSAY OFFICE', 'HOTEL', 'LIVERY', 'GUNSMITH'], ['GENERAL STORE', 'SHERIFF', 'UNDERTAKER', 'TELEGRAPH', 'DRY GOODS', 'BLACKSMITH', 'CHURCH']],
+    bounties: [
+      { id: 'pete', name: 'Dusty Pete Hollis', alias: 'Cattle thief, mostly harmless', tier: 1, reward: 50, react: 950, acc: .35, side: 0, fakes: 0, ...L(0x7a5634, 0x4a3b2c, 0x6b5236, 0x8c2f24, 0xc99a74) },
+      { id: 'kate', name: 'Calico Kate Morrow', alias: 'Robbed the Tucson stage twice', tier: 2, reward: 120, react: 800, acc: .5, side: 0, fakes: 1, ...L(0x6d3b3b, 0x3d3a46, 0x2c2622, 0xd8c9a0, 0xd8a884, 'bowler') },
+      { id: 'hollis', name: 'The Hollis Cousins', alias: 'Abe and Zeke. Pete\'s kin, and sore about it.', tier: 2, reward: 200, fakes: 1, gang: [
+        { name: 'Abe Hollis', react: 1000, acc: .35, side: 0, ...L(0x6a5038, 0x3e3226, 0x5a4630, 0x8c2f24, 0xc49a74) },
+        { name: 'Zeke Hollis', react: 1150, acc: .3, side: 0, ...L(0x5a6a48, 0x403428, 0x7a6246, 0x2f4a6a, 0xd0a07a, 'stetson') }] },
+    ],
+    boss: { id: 'ruth', name: 'Rattlesnake Ruth', alias: 'Horse thief and worse. Takes two body shots to drop.', tier: 4, reward: 600, react: 620, acc: .7, side: .5, fakes: 2, hp: 2, ...L(0x8a6a3c, 0x3a2e22, 0x6e5a3a, 0x2f6a4a, 0xc4936a, 'stetson') },
+  },
+  {
+    id: 'mesa', name: 'Red Mesa', time: 'Dusk', est: 1872, blurb: 'Copper-mining town under red cliffs. The money is better, and so are the guns.',
+    sky: { top: 0x2a0f2a, mid: 0xc4503c }, glow: 0xff5a30, disc: 0xffd0a0, stars: 0, sun: [-.14, .09, -1],
+    light: 0xff6a48, lightI: .95, hemi: [0xffa090, 0x4a2028, .62], fill: .3, windows: .85, sand: '#b8784e', mesa: [0x5a2030, 0x7a3a40],
+    pal: [0xb07850, 0xc49268, 0x9a5c3c, 0xa8805c, 0x8a5a40, 0xc0a078, 0x7a4a34, 0xb88a64, 0x9c6a48, 0xa47454, 0x8e6446, 0xc8a080, 0x7e5038, 0xd4b490],
+    signs: [['CANTINA', 'ASSAYER', 'MINING CO.', 'HOTEL', 'STABLES', 'BATHHOUSE', 'JAIL'], ['TRADING POST', 'MARSHAL', 'DOCTOR', 'STAGE OFFICE', 'POST OFFICE', 'FARRIER', 'CHAPEL']],
+    bounties: [
+      { id: 'jack', name: 'One-Eye Jack Tully', alias: 'Bank robber. Sidesteps when he draws.', tier: 4, reward: 350, react: 650, acc: .6, side: .45, fakes: 1, ...L(0x3e4a3a, 0x2f2a24, 0x1f1b18, 0x1f3a5a, 0xb98863) },
+      { id: 'penny', name: 'Bad Penny & Cole Dawes', alias: 'Married outlaws. They always turn up together.', tier: 5, reward: 550, fakes: 2, gang: [
+        { name: 'Bad Penny', react: 700, acc: .55, side: .3, ...L(0x5a2a3a, 0x2e2830, 0x2a2228, 0xd8c9a0, 0xd8a884, 'bowler') },
+        { name: 'Cole Dawes', react: 760, acc: .5, side: .3, ...L(0x6a5a40, 0x3a3026, 0x4a3a2a, 0x6a1414, 0xb48460) }] },
+      { id: 'mendes', name: 'Lucky Lou Mendes', alias: 'Card sharp. Never stands still.', tier: 5, reward: 650, react: 570, acc: .68, side: .75, fakes: 2, ...L(0x2a4a5a, 0x3a3026, 0xc8a86a, 0x8c2f24, 0xb07a52, 'sombrero') },
+    ],
+    boss: { id: 'deacon', name: 'Deacon Elias Graves', alias: 'Wanted in four territories. Takes two body shots to drop.', tier: 7, reward: 1500, react: 490, acc: .82, side: .6, fakes: 3, hp: 2, ...L(0x1d1a1a, 0x24201e, 0x111010, 0x6a1414, 0xd2b49a, 'stetson') },
+  },
+  {
+    id: 'springs', name: 'Coyote Springs', time: 'Midnight', est: 1868, blurb: 'A ghost of a town after dark. Whoever is still awake here is not waiting for the sheriff.',
+    sky: { top: 0x03060f, mid: 0x1c2846 }, glow: 0x5a78b8, disc: 0xe8eeff, stars: .9, sun: [.22, .34, -1],
+    light: 0x9fb4e8, lightI: .5, hemi: [0x5a6a98, 0x141218, .42], fill: .18, windows: 1, sand: '#6e6458', mesa: [0x10162a, 0x182038],
+    pal: [0x5e5a58, 0x6a645c, 0x4a4a50, 0x706a60, 0x585450, 0x7a7268, 0x504c4a, 0x666058, 0x5a5650, 0x48464a, 0x6e685e, 0x625c56, 0x54504c, 0x8a847a],
+    signs: [['SALOON', 'CARD ROOM', 'BANK', 'BOARDING', 'GAMBLING HALL', 'LIVERY', 'GUNSMITH'], ['GENERAL STORE', 'SHERIFF', 'UNDERTAKER', 'TELEGRAPH', 'DANCE HALL', 'BLACKSMITH', 'CHURCH']],
+    bounties: [
+      { id: 'crane', name: 'Silas "Two-Gun" Crane', alias: 'Fastest hands north of the river.', tier: 7, reward: 900, react: 470, acc: .8, side: .5, fakes: 2, ...L(0x3a3030, 0x24201e, 0x2a2220, 0x8a7a2a, 0xc8a080) },
+      { id: 'varga', name: 'The Varga Twins', alias: 'Identical, and identically fast.', tier: 8, reward: 1300, fakes: 3, gang: [
+        { name: 'Mateo Varga', react: 520, acc: .72, side: .4, ...L(0x2a2a3a, 0x1e1e26, 0x1a1a20, 0xa82a2a, 0xb07a52, 'sombrero') },
+        { name: 'Tomas Varga', react: 560, acc: .72, side: .4, ...L(0x2a2a3a, 0x1e1e26, 0x1a1a20, 0x2a6aa8, 0xb07a52, 'sombrero') }] },
+      { id: 'widow', name: 'The Widow Blackwood', alias: 'Buried three husbands. Shot all three.', tier: 8, reward: 1400, react: 440, acc: .85, side: .8, fakes: 3, ...L(0x141214, 0x141214, 0x0e0c0e, 0x4a1a3a, 0xe0cdb5, 'bowler') },
+    ],
+    boss: { id: 'rider', name: 'The Pale Rider', alias: 'Name unknown. Never missed. Takes two body shots to drop.', tier: 9, reward: 4000, react: 400, acc: .9, side: .8, fakes: 3, hp: 2, ...L(0xb9b1a0, 0x8a8378, 0xd8d2c4, 0x2a2a2a, 0xe0cdb5, 'stetson') },
+  },
 ];
-function outlawFor(i) {
-  if (i < OUTLAWS.length) return OUTLAWS[i];
-  const k = i - OUTLAWS.length + 1, b = OUTLAWS[(k * 3) % OUTLAWS.length];
-  return { ...b, name: 'Drifter No. ' + k, alias: 'Rode in asking for whoever shot the Pale Rider',
-    react: Math.max(300, 400 - k * 15), acc: .92, reward: 3000 + k * 1000, side: .85, sway: .013, fakes: 3 };
-}
+const BOUNTIES = {};
+TOWNS.forEach((t, ti) => {
+  t.boss.isBoss = true;
+  for (const b of [...t.bounties, t.boss]) {
+    b.town = ti;
+    b.sway = .004 + (b.tier - 1) * .0011;
+    if (b.gang) { b.react = Math.min(...b.gang.map(m => m.react)); b.acc = Math.max(...b.gang.map(m => m.acc)); }
+    BOUNTIES[b.id] = b;
+  }
+});
+
+/* ---------------- General Store ---------------- */
+const HOLSTERS = [
+  { name: 'Stiff leather holster', cost: 0, ms: 0, desc: 'Came with the gun.' },
+  { name: 'Oiled holster', cost: 200, ms: 40, desc: 'Outlaws fire 40 ms later.' },
+  { name: 'Greased holster', cost: 500, ms: 80, desc: 'Outlaws fire 80 ms later.' },
+  { name: 'Fast-draw rig', cost: 1100, ms: 130, desc: 'Low-slung and tied down. Outlaws fire 130 ms later.' },
+];
+const HANDS = [
+  { name: 'Shaky hands', cost: 0, mul: 1, desc: 'Nothing a drink won\'t fix.' },
+  { name: 'Steady hands', cost: 150, mul: .8, desc: '20% less sway and a quieter heartbeat.' },
+  { name: 'Calm hands', cost: 450, mul: .62, desc: '38% less sway and a quieter heartbeat.' },
+  { name: 'Ice in the veins', cost: 1000, mul: .45, desc: '55% less sway. Your heart barely bothers.' },
+];
+const GUNS = {
+  colt: { name: 'Colt Single Action', cost: 0, reload: 1600, sway: 1, steel: 0x3a3a3e, grip: 0x6a3a1e, barrel: 1, desc: 'The old reliable. Slow to reload.' },
+  schofield: { name: 'Schofield top-break', cost: 650, reload: 900, sway: 1, steel: 0x2c3444, grip: 0x4a2a16, barrel: 1, desc: 'Breaks open to reload in under a second.' },
+  buntline: { name: 'Buntline Special', cost: 1400, reload: 1600, sway: .7, steel: 0x3a3a3e, grip: 0x6a3a1e, barrel: 2.1, zoom: true, desc: 'Twelve-inch barrel. Steadier aim and a closer look once drawn.' },
+  gold: { name: 'Gold Peacemaker', cost: 3000, reload: 1100, sway: .8, steel: 0xc9a03a, grip: 0xe8dcc0, barrel: 1.25, desc: 'Engraved and gold-plated. Steadier, and quick to reload.' },
+};
+const HATS = {
+  drifter: { name: 'Drifter', cost: 0, shape: 'drifter', color: 0x6b5236, desc: 'Sweat-stained and comfortable.' },
+  stetson: { name: 'Tall Stetson', cost: 80, shape: 'stetson', color: 0xb08a5a, desc: 'Ten gallons, give or take.' },
+  bowler: { name: 'Bowler', cost: 120, shape: 'bowler', color: 0x2a2420, desc: 'For the gentleman gunfighter.' },
+  sombrero: { name: 'Sombrero', cost: 200, shape: 'sombrero', color: 0xc8a86a, desc: 'Shade for the whole street.' },
+  black: { name: 'Black hat', cost: 350, shape: 'drifter', color: 0x141210, desc: 'Everybody knows what a black hat means.' },
+  white: { name: 'White hat', cost: 500, shape: 'stetson', color: 0xe8e2d4, desc: 'The good guy, every time.' },
+};
+
+/* ---------------- Saved progress ---------------- */
+const SAVE_KEY = 'sundown-save-v1';
+const save = { cash: 0, done: {}, holster: 0, hands: 0, guns: ['colt'], gun: 'colt', hats: ['drifter'], hat: 'drifter', fastest: null, town: 0 };
+try { const s = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); if (s && typeof s === 'object') Object.assign(save, s); } catch (e) { }
+save.cash = Math.max(0, Number(save.cash) || 0);
+save.holster = clamp(save.holster | 0, 0, HOLSTERS.length - 1);
+save.hands = clamp(save.hands | 0, 0, HANDS.length - 1);
+if (!save.done || typeof save.done !== 'object') save.done = {};
+if (!Array.isArray(save.guns)) save.guns = ['colt'];
+if (!Array.isArray(save.hats)) save.hats = ['drifter'];
+if (!GUNS[save.gun] || !save.guns.includes(save.gun)) save.gun = 'colt';
+if (!HATS[save.hat] || !save.hats.includes(save.hat)) save.hat = 'drifter';
+save.town = clamp(save.town | 0, 0, TOWNS.length - 1);
+function persist() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(save)); } catch (e) { } }
+const townOpen = i => i === 0 || !!save.done[TOWNS[i - 1].boss.id];
+const bossOpen = t => t.bounties.every(b => save.done[b.id]);
+const payFor = b => save.done[b.id] ? Math.round(b.reward / 2) : b.reward;
+const starsFor = b => clamp(Math.ceil(b.tier / 2), 1, 5);
+const gunNow = () => GUNS[save.gun];
 
 /* ---------------- Sound (all synthesized) ---------------- */
 const sfx = (() => {
@@ -350,14 +492,18 @@ const sfx = (() => {
       for (let k = 0; k < 5; k++) tone(2400 + Math.random() * 400, .02, 'square', .025, t + .05 + k * .14);
     },
     holster() { if (ok()) { const t = ac.currentTime; noise(.18, 'lowpass', 520, 1, .32, t); tone(140, .08, 'sine', .15, t + .03); } },
-    reload() {
+    till() {  // cash-register ding for the General Store
       if (!ok()) return; const t = ac.currentTime;
-      tone(900, .05, 'square', .06, t + .05);
-      for (let k = 0; k < 6; k++) tone(1600 + Math.random() * 300, .03, 'square', .05, t + .25 + k * .17);
-      tone(1200, .05, 'square', .07, t + 1.35);
+      tone(1320, .5, 'sine', .18, t); tone(1980, .4, 'sine', .08, t + .02); noise(.08, 'highpass', 3000, .7, .12, t);
+    },
+    reload(ms = 1600) {
+      if (!ok()) return; const t = ac.currentTime, k = ms / 1600;
+      tone(900, .05, 'square', .06, t + .05 * k);
+      for (let i = 0; i < 6; i++) tone(1600 + Math.random() * 300, .03, 'square', .05, t + (.25 + i * .17) * k);
+      tone(1200, .05, 'square', .07, t + 1.35 * k);
     },
     wind(v) { windLevel = v; if (ok()) windG.gain.setTargetAtTime(v * ambience, ac.currentTime, .6); },
-    // 0..1 multiplier for the wind ambience, set from the pause menu.
+    // 0..1 multiplier for the wind ambience, set from the title screen or pause menu.
     setAmbience(x) { ambience = x; if (ok()) windG.gain.setTargetAtTime(windLevel * ambience, ac.currentTime, .1); },
     getAmbience() { return ambience; },
   };
@@ -372,31 +518,38 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 $('game').appendChild(renderer.domElement);
 const canvas = renderer.domElement;
 
-const HORIZON = 0xe38d5c;
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(HORIZON);
-scene.fog = new THREE.Fog(HORIZON, 35, 170);
+scene.background = new THREE.Color(TOWNS[0].sky.mid);
+scene.fog = new THREE.Fog(TOWNS[0].sky.mid, 35, 170);
 
-const camera = new THREE.PerspectiveCamera(62, innerWidth / innerHeight, .03, 900);
+const BASE_FOV = 62;
+const camera = new THREE.PerspectiveCamera(BASE_FOV, innerWidth / innerHeight, .03, 900);
 camera.rotation.order = 'YXZ';
 scene.add(camera);
 
 const sunDir = new THREE.Vector3(.09, .1, -1).normalize();
+const skyU = {
+  top: { value: new THREE.Color(TOWNS[0].sky.top) }, mid: { value: new THREE.Color(TOWNS[0].sky.mid) }, sunDir: { value: sunDir },
+  glowCol: { value: new THREE.Color(TOWNS[0].glow) }, discCol: { value: new THREE.Color(TOWNS[0].disc) }, stars: { value: 0 },
+};
 const sky = new THREE.Mesh(new THREE.SphereGeometry(500, 32, 16), new THREE.ShaderMaterial({
-  side: THREE.BackSide, depthWrite: false, fog: false,
-  uniforms: { top: { value: new THREE.Color(0x2b2244) }, mid: { value: new THREE.Color(HORIZON) }, sunDir: { value: sunDir } },
+  side: THREE.BackSide, depthWrite: false, fog: false, uniforms: skyU,
   vertexShader: 'varying vec3 vD; void main(){ vD = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
-  fragmentShader: `uniform vec3 top; uniform vec3 mid; uniform vec3 sunDir; varying vec3 vD;
+  fragmentShader: `uniform vec3 top; uniform vec3 mid; uniform vec3 sunDir; uniform vec3 glowCol; uniform vec3 discCol; uniform float stars; varying vec3 vD;
+    float hash(vec3 p){ return fract(sin(dot(p, vec3(12.9898,78.233,45.164))) * 43758.5453); }
     void main(){ vec3 d = normalize(vD); float h = d.y;
       vec3 c = h > 0.0 ? mix(mid, top, pow(clamp(h*1.5,0.0,1.0), 0.65)) : mid;
       float s = max(dot(d, sunDir), 0.0);
-      c += vec3(1.0,0.55,0.25)*pow(s,6.0)*0.35 + vec3(1.0,0.75,0.45)*pow(s,60.0)*0.5 + vec3(1.0,0.95,0.8)*smoothstep(0.9993,0.9996,s)*1.2;
+      c += glowCol*pow(s,6.0)*0.35 + glowCol*pow(s,60.0)*0.5 + discCol*smoothstep(0.9993,0.9996,s)*1.2;
+      if (stars > 0.0 && h > 0.02) { vec3 q = floor(d*380.0); float st = step(0.9975, hash(q));
+        c += vec3(st) * stars * smoothstep(0.02, 0.25, h) * (0.5 + 0.5*hash(q + 7.0)); }
       gl_FragColor = vec4(c,1.0); }`
 }));
 sky.renderOrder = -1;
 scene.add(sky);
 
-scene.add(new THREE.HemisphereLight(0xffd2a8, 0x5a3626, .7));
+const hemi = new THREE.HemisphereLight(0xffd2a8, 0x5a3626, .7);
+scene.add(hemi);
 const sun = new THREE.DirectionalLight(0xffa868, 1.05);
 sun.position.set(14, 28, -55);
 sun.target.position.set(0, 0, -8);
@@ -430,16 +583,17 @@ function woodMat(color, rx, ry) {
   t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx, ry);
   return new THREE.MeshLambertMaterial({ color, map: t });
 }
-function sandTex() {
+const sandCache = {};
+function sandTex(base) {
+  if (sandCache[base]) return sandCache[base];
   const [c, g] = mkCanvas(512, 512);
-  g.fillStyle = '#c9925e'; g.fillRect(0, 0, 512, 512);
+  g.fillStyle = base; g.fillRect(0, 0, 512, 512);
   for (let i = 0; i < 9000; i++) {
-    const v = Math.random();
-    g.fillStyle = v < .5 ? `rgba(90,50,25,${Math.random() * .18})` : `rgba(255,220,170,${Math.random() * .14})`;
+    g.fillStyle = Math.random() < .5 ? `rgba(60,35,20,${Math.random() * .18})` : `rgba(255,220,170,${Math.random() * .12})`;
     g.fillRect(Math.random() * 512, Math.random() * 512, 1 + Math.random() * 3, 1 + Math.random() * 2);
   }
   const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(80, 80); t.anisotropy = 4;
-  return t;
+  return (sandCache[base] = t);
 }
 function signTex(text, bg, fg) {
   const [c, g] = mkCanvas(512, 128);
@@ -468,11 +622,12 @@ function mesh(geo, mat, x, y, z, parent) {
   const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z);
   m.castShadow = true; m.receiveShadow = true; parent.add(m); return m;
 }
-const envGroup = new THREE.Group();
-scene.add(envGroup);
+const envGroup = new THREE.Group();   // everything a shot can hit besides outlaws
+const farGroup = new THREE.Group();   // distant mesas
+scene.add(envGroup, farGroup);
 
-/* ---------------- Town ---------------- */
-function building(side, zc, w, h, color, sign, lit) {
+/* ---------------- Towns ---------------- */
+function building(side, zc, w, h, color, sign, lit, glowM) {
   const g = new THREE.Group(), d = 8, fTop = h + 1.3;
   const wall = woodMat(color, w / 2.4, h / 2.4);
   const trim = lam(new THREE.Color(color).multiplyScalar(.55));
@@ -492,15 +647,14 @@ function building(side, zc, w, h, color, sign, lit) {
   const n = Math.max(2, Math.round(w / 3) + 1);
   for (let i = 0; i < n; i++) mesh(box(.14, 2.95, .14), trim, -w / 2 + .2 + i * (w - .4) / (n - 1), 1.55, 2.4, g);
   mesh(box(1.15, 2.25, .1), lam(0x2a1a10), 0, 1.33, .15, g);
-  const glow = new THREE.MeshBasicMaterial({ color: 0xffb35e });
   const dark = lam(0x1a1412);
   for (const sx of [-1, 1]) {
     const x = sx * w / 3.1;
     mesh(box(1.3, 1.45, .08), trim, x, 1.65, .14, g);
-    mesh(box(1.1, 1.25, .1), lit && Math.random() < .75 ? glow : dark, x, 1.65, .15, g);
+    mesh(box(1.1, 1.25, .1), Math.random() < lit ? glowM : dark, x, 1.65, .15, g);
     if (h > 4.6) {
       mesh(box(1.0, 1.1, .08), trim, x, 4.15, .14, g);
-      mesh(box(.85, .95, .1), Math.random() < .35 ? glow : dark, x, 4.15, .15, g);
+      mesh(box(.85, .95, .1), Math.random() < lit * .45 ? glowM : dark, x, 4.15, .15, g);
     }
   }
   if (Math.random() < .6) {
@@ -512,62 +666,78 @@ function building(side, zc, w, h, color, sign, lit) {
   envGroup.add(g);
 }
 
-function cactus(x, z, s) {
-  const g = new THREE.Group(), m = lam(0x4f6338);
+function cactus(x, z, s, col) {
+  const g = new THREE.Group(), m = lam(col);
   mesh(cyl(.28, .32, 3.2, 8), m, 0, 1.6, 0, g);
-  const a = mesh(cyl(.18, .18, 1.2, 8), m, .55, 1.9, 0, g);
+  mesh(cyl(.18, .18, 1.2, 8), m, .55, 1.9, 0, g);
   mesh(cyl(.18, .18, .6, 8), m, .35, 1.5, 0, g).rotation.z = Math.PI / 2;
-  const b = mesh(cyl(.16, .16, 1, 8), m, -.5, 2.3, 0, g);
+  mesh(cyl(.16, .16, 1, 8), m, -.5, 2.3, 0, g);
   mesh(cyl(.16, .16, .5, 8), m, -.3, 1.9, 0, g).rotation.z = Math.PI / 2;
   g.position.set(x, 0, z); g.scale.setScalar(s); g.rotation.y = Math.random() * 6;
   envGroup.add(g);
 }
 
-function buildTown() {
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(700, 700), new THREE.MeshLambertMaterial({ map: sandTex() }));
+// Street layout shared by every town: [width, height, lit] for each lot, left then right.
+const LOTS = [[[9, 5.2, 1], [6, 3.8, 0], [8, 5.6, 1], [7, 4.2, 0], [10, 6.2, 1], [8, 4.4, 0], [7, 4, 1]],
+  [[9, 4.8, 1], [7, 4.2, 1], [7, 4.6, 0], [6, 3.9, 0], [9, 5, 1], [8, 4.1, 0], [9, 6.5, 1]]];
+function buildTown(t) {
+  while (envGroup.children.length) envGroup.remove(envGroup.children[0]);
+  while (farGroup.children.length) farGroup.remove(farGroup.children[0]);
+  const night = t.stars > 0;
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(700, 700), new THREE.MeshLambertMaterial({ map: sandTex(t.sand) }));
   ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; envGroup.add(ground);
-  const rutM = new THREE.MeshLambertMaterial({ color: 0x9c6a42, transparent: true, opacity: .45 });
+  const rutM = new THREE.MeshLambertMaterial({ color: new THREE.Color(t.sand).multiplyScalar(.75), transparent: true, opacity: .45 });
   for (const x of [-1.1, 1.1]) {
     const r = new THREE.Mesh(new THREE.PlaneGeometry(.6, 120), rutM);
     r.rotation.x = -Math.PI / 2; r.position.set(x, .01, -30); r.receiveShadow = true; envGroup.add(r);
   }
-
-  const L = [['SALOON', 9, 5.2, 0x8a4a32, 1], ['BARBER', 6, 3.8, 0x9a8a6a, 0], ['BANK', 8, 5.6, 0x7d7a70, 1], ['ASSAY OFFICE', 7, 4.2, 0xa07a4c, 0],
-    ['HOTEL', 10, 6.2, 0x6e4a3a, 1], ['LIVERY', 8, 4.4, 0x8a6a48, 0], ['GUNSMITH', 7, 4, 0x5e5448, 1]];
-  const R = [['GENERAL STORE', 9, 4.8, 0xa58658, 1], ['SHERIFF', 7, 4.2, 0x7a6248, 1], ['UNDERTAKER', 7, 4.6, 0x4a4440, 0], ['TELEGRAPH', 6, 3.9, 0x8a7a5a, 0],
-    ['DRY GOODS', 9, 5, 0x6a5a4a, 1], ['BLACKSMITH', 8, 4.1, 0x5a4a3c, 0], ['CHURCH', 9, 6.5, 0xc8bca4, 1]];
-  for (const [list, side] of [[L, -1], [R, 1]]) {
+  const glowM = new THREE.MeshBasicMaterial({ color: night ? 0xffc070 : 0xffb35e });
+  LOTS.forEach((lots, s) => {
     let z = 10;
-    for (const [name, w, h, c, lit] of list) { building(side, z - w / 2, w, h, c, name, lit); z -= w + rand(.4, 1.4); }
-  }
-  // hitching rails
+    lots.forEach(([w, h, lit], i) => {
+      building(s ? 1 : -1, z - w / 2, w, h, t.pal[(s * 7 + i) % t.pal.length], t.signs[s][i], lit ? t.windows : t.windows * .25, glowM);
+      z -= w + rand(.4, 1.4);
+    });
+  });
   for (const [x, z] of [[-4.6, -3], [4.6, -9], [-4.6, -24], [4.6, -30]]) {
     const g = new THREE.Group(), m = lam(0x5a3e28);
     mesh(box(.12, 1, .12), m, 0, .5, -1.2, g); mesh(box(.12, 1, .12), m, 0, .5, 1.2, g); mesh(box(.1, .1, 2.6), m, 0, .95, 0, g);
     g.position.set(x, 0, z); envGroup.add(g);
   }
-  // water trough
   mesh(box(.8, .6, 2.2), woodMat(0x6a4a30, 1, .5), 4.8, .3, -14, envGroup);
-  // water tower behind the right-hand row
   const wt = new THREE.Group(), wm = lam(0x5a4030);
   for (const [x, z] of [[-1.5, -1.5], [1.5, -1.5], [-1.5, 1.5], [1.5, 1.5]]) mesh(box(.25, 9, .25), wm, x, 4.5, z, wt);
   mesh(cyl(2.4, 2.4, 3.4, 18), woodMat(0x7a5638, 4, 1.5), 0, 10.6, 0, wt);
   mesh(new THREE.ConeGeometry(2.7, 1.4, 18), lam(0x3c2a20), 0, 13, 0, wt);
   wt.position.set(19, 0, -28); envGroup.add(wt);
-  // cacti on the outskirts
-  for (let i = 0; i < 26; i++) {
-    const s = Math.random() < .5 ? -1 : 1;
-    cactus(s * rand(18, 70), rand(-140, 10), rand(.7, 1.3));
-  }
-  for (let i = 0; i < 6; i++) cactus(rand(-14, 14), rand(-75, -58), rand(.8, 1.2));
-  // mesas on the horizon
-  const mesaM = new THREE.MeshBasicMaterial({ color: 0x7a4450, fog: false });
-  const mesaFar = new THREE.MeshBasicMaterial({ color: 0x9a5a5a, fog: false });
+  const cacCol = night ? 0x2e3a2c : 0x4f6338;
+  for (let i = 0; i < 26; i++) cactus((Math.random() < .5 ? -1 : 1) * rand(18, 70), rand(-140, 10), rand(.7, 1.3), cacCol);
+  for (let i = 0; i < 6; i++) cactus(rand(-14, 14), rand(-75, -58), rand(.8, 1.2), cacCol);
+  const mesaM = new THREE.MeshBasicMaterial({ color: t.mesa[0], fog: false });
+  const mesaFar = new THREE.MeshBasicMaterial({ color: t.mesa[1], fog: false });
   for (const [x, z, r, h, far] of [[-220, -300, 60, 34, 0], [-120, -340, 40, 24, 1], [110, -320, 50, 30, 0], [200, -280, 35, 22, 1],
     [-300, -180, 50, 28, 1], [290, -200, 60, 36, 0], [-60, -380, 70, 18, 1], [70, -400, 50, 16, 1]]) {
-    const m = new THREE.Mesh(cyl(r * .78, r, h, 9), far ? mesaFar : mesaM);
-    m.position.set(x, h / 2 - 1, z); m.rotation.y = Math.random(); scene.add(m);
+    const m = new THREE.Mesh(cyl(r * .78, r, h * (t.id === 'mesa' ? 1.6 : 1), 9), far ? mesaFar : mesaM);
+    m.position.set(x, h * (t.id === 'mesa' ? 1.6 : 1) / 2 - 1, z); m.rotation.y = Math.random(); farGroup.add(m);
   }
+}
+function applySky(t) {
+  skyU.top.value.set(t.sky.top); skyU.mid.value.set(t.sky.mid);
+  skyU.glowCol.value.set(t.glow); skyU.discCol.value.set(t.disc); skyU.stars.value = t.stars;
+  sunDir.set(...t.sun).normalize();
+  scene.background.set(t.sky.mid); scene.fog.color.set(t.sky.mid);
+  sun.color.set(t.light); sun.intensity = t.lightI;
+  sun.position.set(clamp(sunDir.x * 150, -30, 30), 28, -55);
+  hemi.color.set(t.hemi[0]); hemi.groundColor.set(t.hemi[1]); hemi.intensity = t.hemi[2];
+  fill.intensity = t.fill;
+}
+// Towns are built once the sign font has loaded; until then only the sky changes.
+let townIdx = -1, townWanted = 0, fontsDone = false;
+function setTown(i) {
+  townWanted = i;
+  if (!fontsDone || townIdx === i) return;
+  townIdx = i;
+  applySky(TOWNS[i]); buildTown(TOWNS[i]);
 }
 
 /* ---------------- Particles & flashes ---------------- */
@@ -609,16 +779,19 @@ let oFlashT = 0;
 const vm = new THREE.Group();
 const gunSpin = new THREE.Group();  // the revolver alone, so it can twirl in the hand
 vm.add(gunSpin);
+const vmSteel = new THREE.MeshLambertMaterial({ color: 0x3a3a3e });
+const vmGrip = woodMat(0x6a3a1e, .3, .5);
+const vmBarrel = [], vmSight = [];
 (() => {
-  const steel = new THREE.MeshLambertMaterial({ color: 0x3a3a3e }), dark = lam(0x1c1c20), grip = woodMat(0x6a3a1e, .3, .5), sleeve = lam(0x4a3626), skin = lam(0xc0906a);
+  const dark = lam(0x1c1c20), sleeve = lam(0x4a3626), skin = lam(0xc0906a);
   const add = (g, m, x, y, z, rx = 0, parent = gunSpin) => { const o = new THREE.Mesh(g, m); o.position.set(x, y, z); o.rotation.x = rx; parent.add(o); return o; };
-  add(box(.036, .06, .15), steel, 0, 0, 0);
-  add(cyl(.011, .012, .2, 10), dark, 0, .02, -.17, Math.PI / 2);
-  add(cyl(.016, .016, .2, 10), steel, 0, .004, -.17, Math.PI / 2).scale.set(1, 1, .7);
-  add(cyl(.028, .028, .062, 12), steel, 0, .008, -.03, Math.PI / 2);
-  add(box(.006, .014, .01), dark, 0, .036, -.26);
+  add(box(.036, .06, .15), vmSteel, 0, 0, 0);
+  vmBarrel.push(add(cyl(.011, .012, .2, 10), dark, 0, .02, -.17, Math.PI / 2));
+  const outer = add(cyl(.016, .016, .2, 10), vmSteel, 0, .004, -.17, Math.PI / 2); outer.scale.set(1, 1, .7); vmBarrel.push(outer);
+  add(cyl(.028, .028, .062, 12), vmSteel, 0, .008, -.03, Math.PI / 2);
+  vmSight.push(add(box(.006, .014, .01), dark, 0, .036, -.26));
   add(box(.012, .028, .02), dark, 0, .044, .07);
-  add(box(.032, .11, .05), grip, 0, -.065, .085, -.4);
+  add(box(.032, .11, .05), vmGrip, 0, -.065, .085, -.4);
   add(box(.06, .07, .08), skin, 0, -.06, .1, -.4, vm);
   add(box(.085, .085, .3), sleeve, .01, -.09, .3, -.25, vm);
 })();
@@ -628,9 +801,37 @@ const vLight = new THREE.PointLight(0xffaa55, 0, 7);
 vLight.position.set(0, .02, -.4); vm.add(vLight);
 vm.visible = false;
 camera.add(vm);
+// Repaint and resize the revolver to match the one you carry.
+function applyGunLook() {
+  const g = gunNow(), len = .2 * g.barrel, mid = -.07 - len / 2;
+  vmSteel.color.set(g.steel); vmGrip.color.set(g.grip);
+  for (const b of vmBarrel) { b.scale.y = g.barrel; b.position.z = mid; }
+  vmSight[0].position.z = -.07 - len + .01;
+  vFlash.position.z = -.07 - len - .06;
+  vLight.position.z = vFlash.position.z - .05;
+}
 
 /* ---------------- Outlaw model ---------------- */
-let cur = null, out = null;
+let cur = null, out = null, outs = [];
+function addHat(hat, shape, hatM, dark, add) {
+  if (shape === 'stetson') {
+    add(cyl(.34, .34, .025, 22), hatM, 0, 0, 0, 'hat', hat);
+    add(cyl(.13, .165, .23, 16), hatM, 0, .125, 0, 'hat', hat).scale.x = .85;
+    add(cyl(.168, .168, .04, 16), dark, 0, .035, 0, 'hat', hat);
+  } else if (shape === 'bowler') {
+    add(cyl(.2, .2, .02, 20), hatM, 0, 0, 0, 'hat', hat);
+    add(new THREE.SphereGeometry(.145, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2), hatM, 0, .005, 0, 'hat', hat).scale.y = 1.1;
+    add(cyl(.148, .148, .03, 16), dark, 0, .02, 0, 'hat', hat);
+  } else if (shape === 'sombrero') {
+    add(cyl(.52, .5, .03, 26), hatM, 0, 0, 0, 'hat', hat);
+    add(cyl(.05, .15, .3, 16), hatM, 0, .16, 0, 'hat', hat);
+    add(cyl(.152, .152, .04, 16), dark, 0, .035, 0, 'hat', hat);
+  } else {
+    add(cyl(.3, .3, .025, 20), hatM, 0, 0, 0, 'hat', hat);
+    add(cyl(.12, .155, .17, 16), hatM, 0, .095, 0, 'hat', hat);
+    add(cyl(.158, .158, .035, 16), dark, 0, .03, 0, 'hat', hat);
+  }
+}
 function makeOutlaw(o) {
   const g = new THREE.Group();
   const coat = lam(o.coat), pants = lam(o.pants), skin = lam(o.skin), hatM = lam(o.hat), dark = lam(0x1a1410), band = lam(o.band), steel = lam(0x2a2a2e);
@@ -647,9 +848,7 @@ function makeOutlaw(o) {
   add(new THREE.SphereGeometry(.13, 14, 10), skin, 0, 1.66, 0, 'head');
   add(box(.21, .09, .07), band, 0, 1.6, .1, 'head');
   const hat = new THREE.Group(); hat.position.set(0, 1.77, 0); g.add(hat);
-  add(cyl(.3, .3, .025, 20), hatM, 0, 0, 0, 'hat', hat);
-  add(cyl(.12, .155, .17, 16), hatM, 0, .095, 0, 'hat', hat);
-  add(cyl(.158, .158, .035, 16), dark, 0, .03, 0, 'hat', hat);
+  addHat(hat, o.hatShape || 'drifter', hatM, dark, add);
   hat.rotation.x = -.06;
   const armL = new THREE.Group(); armL.position.set(.33, 1.44, 0); armL.rotation.z = .14; g.add(armL);
   add(box(.13, .62, .14), coat, 0, -.3, 0, 'limb', armL);
@@ -662,6 +861,7 @@ function makeOutlaw(o) {
   g.traverse(m => { if (m.isMesh) m.receiveShadow = false; });
   return { g, armR, armL, hat, gunPivot };
 }
+function clearOutlaws() { for (const o of outs) scene.remove(o.g); outs = []; out = null; }
 
 const flyers = [];
 function launch(obj, v, spin) {
@@ -702,24 +902,25 @@ function updateTumble(dt) {
 }
 
 /* ---------------- Game state ---------------- */
-const EYE = 1.65, OUT_Z = -16, RELOAD_MS = 1600, SENS = .0022;
+const EYE = 1.65, OUT_Z = -16, SENS = .0022;
 let state = 'menu', stateT = 0, gt = 0, paused = false, pauseReal = 0, mode = 'solo';
 let yaw = 0, pitch = 0, swayT = 0, beatKick = 0;
 const MOVE_SPEED = 3.2, STREET_HALF = 1;  // metres per second; how far either side of centre you can go
 let playerX = 0, moveV = 0, stepT = 0;
 const held = { left: false, right: false };
-// 0 = calm, 1 = shaking. Rises with each outlaw in the campaign, or each round of a duel (plus a jolt at match point).
+const campaign = () => mode === 'solo';
+// Campaign upgrades only apply to bounty hunting, so duels with friends stay even.
+const handsMul = () => campaign() ? HANDS[save.hands].mul : 1;
+const reloadMs = () => campaign() ? gunNow().reload : 1600;
+// 0 = calm, 1 = shaking. Rises with each bounty's tier, or each round of a duel (plus a jolt at match point).
 function nerves() {
   if (mode === 'pvp') return Math.min(1, (Math.max(0, net.n - 1) + (matchPoint() ? 1.5 : 0)) / 5);
-  return Math.min(1, round / 5);
+  return cur ? clamp((cur.tier - 1) / 8, 0, 1) : 0;
 }
 const matchPoint = () => mode === 'pvp' && (myScore() === WIN_AT - 1 || oppScore() === WIN_AT - 1);
-let round = 0, bounty = 0, runBest = null, kills = 0;
 let ammo = 6, reloading = false, reloadT = 0, gunUp = false, gunLift = 0, recoil = 0, vFlashT = 0;
 let drawT0 = 0, drawReal = 0, standoffEnd = 0, fakeTimes = [], nextBeat = 0;
-let disarmed = false, killMs = null, headshot = false, deathT = 0, slowEnd = 0, deathCause = '';
-let best = 0;
-try { best = +localStorage.getItem('sundown-best') || 0; } catch (e) { }
+let disarmed = false, lastKillMs = null, headshots = 0, deathT = 0, slowEnd = 0, deathCause = '';
 
 const banner = $('banner'), subEl = $('sub'), overlay = $('overlay');
 let sayTimer = 0;
@@ -730,16 +931,15 @@ function say(text, sub = '', cls = '', ttl = 0) {
   if (ttl) sayTimer = setTimeout(() => { banner.textContent = ''; subEl.textContent = ''; }, ttl);
 }
 function updateHud() {
+  const lbl = $('hud').querySelectorAll('.lbl');
   if (mode === 'pvp') {
-    $('hud').children[0].firstElementChild.textContent = 'Score';
-    $('hud').children[1].firstElementChild.textContent = 'Round';
+    lbl[0].textContent = 'Score'; lbl[1].textContent = 'Round';
     $('bounty').textContent = myScore() + ' – ' + oppScore();
     $('duel').textContent = net.n;
   } else {
-    $('hud').children[0].firstElementChild.textContent = 'Bounty';
-    $('hud').children[1].firstElementChild.textContent = 'Duel';
-    $('bounty').textContent = money(bounty);
-    $('duel').textContent = round + 1;
+    lbl[0].textContent = 'Purse'; lbl[1].textContent = 'Reward';
+    $('bounty').textContent = money(save.cash);
+    $('duel').textContent = cur ? money(payFor(cur)) : '';
   }
   [...$('chambers').children].forEach((c, i) => c.classList.toggle('spent', i >= ammo));
   $('hint').textContent = reloading ? 'Reloading…' : (state === 'draw' && ammo < 6 ? 'R to reload' : '');
@@ -748,54 +948,68 @@ function setPlaying(on) {
   $('hud').hidden = !on; $('gunhud').hidden = !on; $('crosshair').hidden = !on;
 }
 
+// Walk out into the street to face one outlaw, or a gang of two standing side by side.
 function startDuel(foe) {
-  cur = foe || outlawFor(round);
-  if (out) scene.remove(out.g);
-  clearFlyers();
-  const m = makeOutlaw(cur);
-  out = { ...m, alive: true, drawing: false, drawK: 0, fireAt: 0, acc: cur.acc, tx: 0, stagger: 0, fallT: 0, forceHit: false, firedAt: null, spinOn: false, spinT: 0, holster: false };
-  m.g.position.set(0, 0, OUT_Z - 5);
-  scene.add(m.g);
+  cur = foe;
+  clearOutlaws(); clearFlyers();
+  const members = foe.gang || [foe];
+  const xs = members.length === 1 ? [0] : [-2.1, 2.1];
+  outs = members.map((m, i) => {
+    const o = { ...makeOutlaw(m), name: m.name, react: m.react, acc: m.acc, side: m.side || 0, hp: (!foe.gang && foe.hp) || 1,
+      base: xs[i], tx: xs[i], alive: true, drawing: false, drawK: 0, fireAt: 0, stagger: 0, fallT: 0, forceHit: false,
+      firedAt: null, spinOn: false, spinT: 0, holster: false };
+    o.g.position.set(xs[i], 0, OUT_Z - 5);
+    o.g.traverse(c => { c.userData.owner = o; });
+    scene.add(o.g);
+    return o;
+  });
+  out = outs[0];
   overlay.hidden = true;
   state = 'walk'; stateT = gt;
   yaw = 0; pitch = 0;
   camera.position.set(0, EYE, 5);
   playerX = 0; moveV = 0; spinOn = false; holstered = false; gunSpin.rotation.x = 0;
-  ammo = 6; reloading = false; gunUp = false; gunLift = 0; disarmed = false; killMs = null; headshot = false;
+  ammo = 6; reloading = false; gunUp = false; gunLift = 0; disarmed = false; lastKillMs = null; headshots = 0;
+  applyGunLook();
   vm.visible = true; $('hurt').classList.remove('on'); $('blackout').classList.remove('on');
   setPlaying(true); updateHud();
   document.body.classList.add('tense');
-  say(cur.name, mode === 'pvp' ? `Round ${net.n} · You ${myScore()} – ${oppScore()} · ${matchPoint() ? 'Match point' : 'First to ' + WIN_AT}` : money(cur.reward) + ' reward', 'name');
+  say(foe.name, mode === 'pvp'
+    ? `Round ${net.n} · You ${myScore()} – ${oppScore()} · ${matchPoint() ? 'Match point' : 'First to ' + WIN_AT}`
+    : `${money(payFor(foe))} reward${foe.isBoss ? ' · Boss' : ''}${foe.gang ? ' · Two guns' : ''}`, 'name');
   sfx.wind(.09);
 }
 function beginStandoff() {
   state = 'standoff'; stateT = gt;
   standoffEnd = gt + (mode === 'pvp' ? net.delay : rand(2600, 6200));
   fakeTimes = [];
-  for (let i = 0; i < cur.fakes; i++) fakeTimes.push(rand(stateT + 1000, standoffEnd - 500));
+  for (let i = 0; i < (cur.fakes || 0); i++) fakeTimes.push(rand(stateT + 1000, standoffEnd - 500));
   nextBeat = gt + 600;
-  say('Steady…', mode === 'pvp'
-    ? (net.n === 1 ? 'Wait for the bell. Fastest clean hit to the head or body takes the round. After the bell, A and D (or the arrow keys) move you side to side.' : '')
-    : (round === 0 ? 'Keep your hand still until the bell rings. Draw early and he gets a free shot.' : ''));
+  let tip = '';
+  if (mode === 'pvp') tip = net.n === 1 ? 'Wait for the bell. Fastest clean hit to the head or body takes the round. After the bell, A and D (or the arrow keys) move you side to side.' : '';
+  else if (cur.id === 'pete' && !save.done.pete) tip = 'Keep your hand still until the bell rings. Draw early and he gets a free shot.';
+  else if (cur.gang) tip = 'Two of them. Drop both before either one drops you.';
+  else if (cur.isBoss) tip = 'A head shot drops a boss at once. A body shot only staggers them.';
+  say('Steady…', tip);
 }
 function callDraw() {
   state = 'draw'; drawT0 = gt; drawReal = performance.now();
   sfx.bell(); sfx.wind(.04);
   document.body.classList.remove('tense');
-  out.fireAt = cur.react + rand(-40, 40);
+  const head = campaign() ? HOLSTERS[save.holster].ms : 0;
+  for (const o of outs) o.fireAt = o.react + rand(-40, 40) + head;
   say('DRAW!', '', 'draw', 900);
 }
 function earlyDraw() {
   disarmed = true; deathCause = 'early';
   state = 'draw'; drawT0 = gt; drawReal = performance.now();
+  document.body.classList.remove('tense');
   if (mode === 'pvp') {
     sendShot({ early: true });
-    document.body.classList.remove('tense');
     say('Too early.', 'You reached for your iron before the bell. The round goes to ' + cur.name + '.', 'bad');
     return;
   }
   out.fireAt = 380; out.forceHit = true;
-  document.body.classList.remove('tense');
   say('Too early.', 'You reached for your iron before the bell.', 'bad');
 }
 
@@ -809,7 +1023,7 @@ function playerFire() {
   sfx.shot(true); updateHud();
   const ray = new THREE.Raycaster();
   ray.setFromCamera({ x: 0, y: 0 }, camera);
-  const hits = ray.intersectObjects([out.g, envGroup], true);
+  const hits = ray.intersectObjects([...outs.map(o => o.g), envGroup], true);
   if (mode === 'pvp') {
     const h = hits[0], part = h && out.alive ? h.object.userData.part || null : null;
     if (h) {
@@ -822,55 +1036,71 @@ function playerFire() {
     return;
   }
   if (!hits.length) return;
-  const h = hits[0], part = h.object.userData.part;
-  if (part && out.alive) {
-    if (part === 'head' || part === 'body') {
-      headshot = part === 'head'; killMs = ms;
-      puff(h.point, 0x6a1010, 10, 1.2, .14, .5, .6, 3, .9);
-      kill();
+  const h = hits[0], part = h.object.userData.part, o = h.object.userData.owner;
+  if (part && o && o.alive) {
+    if (part === 'head' || (part === 'body' && o.hp <= 1)) {
+      killOne(o, part === 'head', ms, h.point);
+    } else if (part === 'body') {
+      o.hp--;
+      puff(h.point, 0x6a1010, 8, 1, .12, .45, .6, 3, .9); sfx.hit();
+      o.fireAt = Math.max(o.fireAt, gt - drawT0) + 350; o.stagger = .32;
+      say('', `${o.name} is hit but still standing.`, '', 1200);
     } else if (part === 'limb') {
       puff(h.point, 0x6a1010, 5, .8, .1, .4, .6, 3, .9);
       sfx.hit();
-      out.fireAt = Math.max(out.fireAt, gt - drawT0) + 450; out.acc -= .25; out.stagger = .25;
-      say('', 'Winged him. Finish it.', '', 1100);
-    } else if (part === 'hat' && out.hat.parent === out.g) {
-      launch(out.hat, new THREE.Vector3(rand(-1, 1), 3.5, -2.5), new THREE.Vector3(rand(-8, -4), 0, rand(-4, 4)));
-      out.fireAt += 150;
-      say('', 'Shot his hat clean off.', '', 1100);
+      o.fireAt = Math.max(o.fireAt, gt - drawT0) + 450; o.acc -= .25; o.stagger = .25;
+      say('', `Winged ${o.name}. Finish it.`, '', 1100);
+    } else if (part === 'hat' && o.hat.parent === o.g) {
+      launch(o.hat, new THREE.Vector3(rand(-1, 1), 3.5, -2.5), new THREE.Vector3(rand(-8, -4), 0, rand(-4, 4)));
+      o.fireAt += 150;
+      say('', `Shot ${o.name}'s hat clean off.`, '', 1100);
     }
   } else {
     puff(h.point, 0xd8b088, 7, .9, .25, .7, 1, 0, .7);
   }
 }
 
-function kill() {
-  out.alive = false; out.fallT = gt;
+function killOne(o, head, ms, point) {
+  o.alive = false; o.fallT = gt;
+  puff(point, 0x6a1010, 10, 1.2, .14, .5, .6, 3, .9);
+  sfx.hit();
+  if (head) headshots++;
+  lastKillMs = ms;
+  if (o.hat.parent === o.g) launch(o.hat, new THREE.Vector3(rand(-.6, .6), 2.2, -1.5), new THREE.Vector3(-5, 0, rand(-2, 2)));
+  if (outs.every(x => !x.alive)) win();
+  else say('One down.', '', '', 900);
+}
+function win() {
   state = 'won';
   startSpin();
   slowEnd = performance.now() + 1100;
-  sfx.hit(); sfx.wind(.07);
-  if (out.hat.parent === out.g) launch(out.hat, new THREE.Vector3(rand(-.6, .6), 2.2, -1.5), new THREE.Vector3(-5, 0, rand(-2, 2)));
-  const pay = cur.reward * (headshot ? 1.5 : 1);
-  bounty += pay; kills++;
-  if (runBest === null || killMs < runBest) runBest = killMs;
+  sfx.wind(.07);
+  const b = cur, replay = !!save.done[b.id];
+  const base = payFor(b);
+  const bonus = Math.round(base * .5 * headshots / outs.length);
+  const pay = base + bonus;
+  const unlocks = b.isBoss && !replay && b.town + 1 < TOWNS.length ? TOWNS[b.town + 1] : null;
+  save.cash += pay; save.done[b.id] = true;
+  if (save.fastest == null || lastKillMs < save.fastest) save.fastest = lastKillMs;
+  persist();
   updateHud();
-  say(headshot ? 'Clean shot.' : 'He\'s down.', '', '', 1800);
-  setTimeout(() => showResult(true, pay), 2300);
+  say(headshots === outs.length ? 'Clean shooting.' : (outs.length > 1 ? 'The gang is down.' : `${b.name} is down.`), '', '', 1800);
+  setTimeout(() => showWin({ pay, bonus, replay, unlocks, finale: b.isBoss && !replay && !unlocks }), 2300);
 }
 
-function outlawFire() {
+function outlawFire(o) {
   const t = gt - drawT0;
-  if (out.firedAt === null) out.firedAt = t;
-  const p = out.armR.localToWorld(new THREE.Vector3(0, -.95, 0));
+  if (o.firedAt === null) o.firedAt = t;
+  const p = o.armR.localToWorld(new THREE.Vector3(0, -.95, 0));
   oFlash.position.copy(p); oFlash.visible = true; oFlashT = .06;
   puff(p, 0xbfb0a0, 4, .4, .3, .8, .5, 0, .5);
   sfx.shot(false);
-  const hit = out.forceHit || Math.random() < out.acc;
-  if (hit) { playerDie(!out.forceHit && Math.random() < .25 + out.acc * .2); outlawSpin(); return; }
+  const hit = o.forceHit || Math.random() < o.acc;
+  if (hit) { playerDie(!o.forceHit && Math.random() < .25 + o.acc * .2); outlawSpin(); return; }
   sfx.whiz();
   puff(new THREE.Vector3(rand(-1.6, 1.6), .05, camera.position.z + rand(-2.5, 1)), 0xd8b088, 8, 1, .3, .8, 1.2, 0, .7);
-  out.acc = Math.min(.97, out.acc + .15);
-  out.fireAt = t + rand(520, 720);
+  o.acc = Math.min(.97, o.acc + .15);
+  o.fireAt = t + rand(520, 720);
 }
 
 // A headshot cuts straight to black. A body shot drops you to your knees and face-first into the dirt,
@@ -888,124 +1118,273 @@ function playerDie(head = false) {
     $('hurt').classList.add('on');
     sfx.thump(.8); sfx.wind(.12);
   }
-  if (mode === 'solo') setTimeout(() => showResult(false), 2200);
+  if (mode === 'solo') setTimeout(showLoss, 2200);
 }
 
 function reload() {
   if (state !== 'draw' || disarmed || reloading || ammo === 6) return;
-  reloading = true; reloadT = gt; sfx.reload(); updateHud();
+  reloading = true; reloadT = gt; sfx.reload(reloadMs()); updateHud();
 }
 
 /* ---------------- Screens ---------------- */
-function portrait(o) {
-  return `<svg viewBox="0 0 120 110" aria-hidden="true"><rect width="120" height="110" fill="#cdb27c"/>
+function portrait(o, w = 150) {
+  return `<svg viewBox="0 0 120 110" width="${w}" aria-hidden="true"><rect width="120" height="110" fill="#cdb27c"/>
   <path d="M12 110 C16 84 40 76 60 76 C80 76 104 84 108 110Z" fill="${hex(o.coat)}"/>
   <rect x="53" y="62" width="14" height="16" fill="#4a3424"/>
   <ellipse cx="60" cy="53" rx="15" ry="18" fill="#5a3f2a"/>
   <path d="M44 57 L76 57 L60 75 Z" fill="${hex(o.band)}"/>
-  <ellipse cx="60" cy="39" rx="37" ry="6" fill="${hex(o.hat)}" stroke="#1a120c" stroke-opacity=".4"/>
-  <path d="M43 39 C43 22 48 15 60 15 C72 15 77 22 77 39Z" fill="${hex(o.hat)}" stroke="#1a120c" stroke-opacity=".4"/>
-  <rect x="43.5" y="32" width="33" height="4" fill="#1a120c" opacity=".55"/></svg>`;
+  ${hatSvg(o.hatShape, hex(o.hat))}</svg>`;
+}
+function hatSvg(shape, col) {
+  const s = 'stroke="#1a120c" stroke-opacity=".4"';
+  if (shape === 'bowler') return `<ellipse cx="60" cy="38" rx="24" ry="4" fill="${col}" ${s}/><path d="M44 38 C44 20 76 20 76 38Z" fill="${col}" ${s}/>`;
+  if (shape === 'sombrero') return `<ellipse cx="60" cy="40" rx="54" ry="8" fill="${col}" ${s}/><path d="M48 40 C50 22 54 8 60 8 C66 8 70 22 72 40Z" fill="${col}" ${s}/>`;
+  if (shape === 'stetson') return `<ellipse cx="60" cy="39" rx="42" ry="6" fill="${col}" ${s}/><path d="M42 39 C42 18 48 9 60 12 C72 9 78 18 78 39Z" fill="${col}" ${s}/><rect x="42.5" y="31" width="35" height="4" fill="#1a120c" opacity=".55"/>`;
+  return `<ellipse cx="60" cy="39" rx="37" ry="6" fill="${col}" ${s}/><path d="M43 39 C43 22 48 15 60 15 C72 15 77 22 77 39Z" fill="${col}" ${s}/><rect x="43.5" y="32" width="33" height="4" fill="#1a120c" opacity=".55"/>`;
+}
+const shadowLook = { coat: 0x2a1a10, band: 0x2a1a10, hat: 0x2a1a10, hatShape: 'stetson' };
+function portraits(b, w) {
+  if (!b.gang) return `<span class="portrait">${portrait(b, w)}</span>`;
+  return `<span class="portrait pair">${b.gang.map(m => portrait(m, Math.round(w * .62))).join('')}</span>`;
 }
 function exitLock() { try { if (document.pointerLockElement) document.exitPointerLock(); } catch (e) { } }
 function showScreen(html, btnId, onGo) {
   exitLock();
   $('blackout').classList.remove('on');
-  overlay.innerHTML = html; overlay.hidden = false;
+  overlay.innerHTML = html; overlay.hidden = false; overlay.scrollTop = 0;
   const b = $(btnId); b.onclick = onGo; try { b.focus({ preventScroll: true }); } catch (e) { }
 }
-function showTitle() {
+// A wooden beam with the screen's buttons hanging from it on chains.
+function signs(buttons) { return `<div class="rail wood"></div><div class="signs">${buttons}</div>`; }
+function hangSign(est, title, size = '') {
+  return `<div class="hang"><div class="title-sign wood"><p class="est">${est}</p><p class="carve"${size ? ` style="font-size:${size}"` : ''}>${title}</p></div></div>`;
+}
+const purse = () => `<p class="plaque slim">Purse ${money(save.cash)}</p>`;
+// Leave whatever was happening in the street and stand at the edge of town.
+function toMenu() {
   if (net.duel) leaveDuel();
-  mode = 'solo'; if (out) { scene.remove(out.g); out = null; } $('hurt').classList.remove('on');
-  state = 'menu'; setPlaying(false); vm.visible = false; document.body.classList.remove('tense'); say('');
+  mode = 'solo'; state = 'menu';
+  clearOutlaws(); clearFlyers();
+  setPlaying(false); vm.visible = false; say('');
+  document.body.classList.remove('tense'); $('hurt').classList.remove('on');
+}
+
+function showTitle() {
+  toMenu(); setTown(save.town);
+  const any = Object.keys(save.done).length > 0;
   showScreen(`<div class="saloon">
-    <div class="hang"><div class="title-sign wood">
-      <p class="est">Main Street · Est. 1879</p>
-      <h1 class="carve">Sundown<br>Standoff</h1>
-    </div></div>
+    ${hangSign('Bounty hunting · Est. 1879', 'Sundown<br>Standoff')}
     <div class="board wood">
-      <p class="lede">Six outlaws ride into town before dark. Face them one at a time. Wait for the bell, then draw.</p>
+      <p class="lede">Three towns, a board of wanted posters in each, and a General Store full of better iron. Pick a bounty, wait for the bell, then draw.</p>
       <ul class="keys"><li><kbd>Mouse</kbd>aim</li><li><kbd>Click</kbd>draw &amp; fire</li><li><kbd>R</kbd>reload</li><li><kbd>Esc</kbd>pause</li></ul>
       <p class="small">On a phone, drag to aim and tap to fire.</p>
       <div class="volume" style="margin-top:14px">
         <label class="field" for="ambience-title">Wind &amp; ambience</label>
         <div class="row" style="align-items:center"><input type="range" id="ambience-title" class="slider" min="0" max="100" step="1"><output id="ambience-title-val" for="ambience-title">100%</output></div>
       </div>
-      ${best ? `<p class="plaque slim">Best bounty ${money(best)}</p>` : ''}
+      ${any || save.cash ? purse() : ''}
     </div>
-    ${signs('<button class="sign-btn wood" id="go">Ride alone</button><button class="sign-btn wood" id="pvp">Duel a friend</button>')}
-  </div>`, 'go', () => { sfx.init(); round = 0; bounty = 0; kills = 0; runBest = null; showPoster(); });
+    ${signs(`<button class="sign-btn wood" id="go">${any ? 'Keep hunting' : 'Hunt bounties'}</button><button class="sign-btn wood" id="pvp">Duel a friend</button>`)}
+  </div>`, 'go', () => { sfx.init(); showMap(); });
   $('pvp').onclick = () => { sfx.init(); showDuelLobby(); };
   wireAmbience($('ambience-title'), $('ambience-title-val'));
 }
-// A wooden beam with the screen's buttons hanging from it on chains.
-function signs(buttons) { return `<div class="rail wood"></div><div class="signs">${buttons}</div>`; }
-function showPoster() {
-  if (net.duel) leaveDuel();
-  mode = 'solo';
-  state = 'menu'; setPlaying(false); vm.visible = false; document.body.classList.remove('tense'); say('');
-  if (out) { scene.remove(out.g); out = null; } clearFlyers();
-  const o = outlawFor(round);
+
+function showMap() {
+  toMenu();
+  const rows = TOWNS.map((t, i) => {
+    const open = townOpen(i), n = [...t.bounties, t.boss].filter(b => save.done[b.id]).length;
+    const note = open ? `${t.time} · ${t.blurb}` : `Collect the bounty on ${TOWNS[i - 1].boss.name} to ride here.`;
+    return `<button class="town-row wood" data-town="${i}"${open ? '' : ' disabled'}>
+      <span class="tn">${t.name}</span><span class="tp">${open ? `${n}/4 paid` : 'Locked'}</span><span class="tt">${esc(note)}</span></button>`;
+  }).join('');
+  showScreen(`<div class="saloon">
+    ${hangSign('Where to, stranger?', 'The Territory', 'clamp(38px,11vw,58px)')}
+    <div class="board wood">
+      <div class="towns">${rows}</div>
+      ${purse()}
+    </div>
+    ${signs('<button class="sign-btn wood" id="go">General Store</button><button class="sign-btn wood minor" id="back">Back</button>')}
+  </div>`, 'go', () => showStore(showMap));
+  $('back').onclick = showTitle;
+  overlay.querySelectorAll('.town-row:not([disabled])').forEach(b => { b.onclick = () => showTown(+b.dataset.town); });
+}
+
+function miniPoster(b, i) {
+  const tilt = [-1.6, 1.2, -.8, 1.8][i % 4];
+  if (b.isBoss && !bossOpen(TOWNS[b.town])) {
+    return `<button class="mini boss locked" disabled style="--tilt:${tilt}deg"><span class="w">WANTED</span>
+      <span class="portrait">${portrait(shadowLook, 74)}</span><span class="n">Name not yet known</span>
+      <span class="hint">Pay the other three bounties to draw this one out</span><span class="ribbon">Boss</span></button>`;
+  }
+  const s = starsFor(b);
+  return `<button class="mini${b.isBoss ? ' boss' : ''}" data-id="${b.id}" style="--tilt:${tilt}deg">
+    <span class="w">WANTED</span>${portraits(b, 74)}<span class="n">${esc(b.name)}</span>
+    <span class="stars" aria-label="Difficulty ${s} of 5">${'★'.repeat(s)}${'☆'.repeat(5 - s)}</span>
+    <span class="r">${money(payFor(b))}</span>${save.done[b.id] ? '<span class="stamp">PAID</span>' : ''}${b.isBoss ? '<span class="ribbon">Boss</span>' : ''}</button>`;
+}
+function showTown(i) {
+  toMenu();
+  save.town = i; persist(); setTown(i);
+  const t = TOWNS[i];
+  showScreen(`<div class="saloon">
+    ${hangSign(`${t.time} · Est. ${t.est}`, t.name, 'clamp(38px,11vw,60px)')}
+    <div class="board wood pin">
+      <div class="posters">${[...t.bounties, t.boss].map(miniPoster).join('')}</div>
+      ${purse()}
+    </div>
+    ${signs('<button class="sign-btn wood" id="go">General Store</button><button class="sign-btn wood minor" id="back">Ride on</button>')}
+  </div>`, 'go', () => showStore(() => showTown(i)));
+  $('back').onclick = showMap;
+  overlay.querySelectorAll('.mini[data-id]').forEach(b => { b.onclick = () => showBounty(BOUNTIES[b.dataset.id]); });
+  const first = overlay.querySelector('.mini[data-id]');
+  if (first) try { first.focus({ preventScroll: true }); } catch (e) { }
+}
+
+function showBounty(b) {
+  toMenu(); setTown(b.town);
+  const replay = !!save.done[b.id];
+  const habit = b.gang ? 'Two guns' : b.hp > 1 ? 'Takes 2 hits' : b.side > .6 ? 'Never still' : b.side > 0 ? 'Sidesteps' : 'Stands still';
   showScreen(`<div class="saloon">
     <div class="board wood pin"><article class="poster">
       <p class="wanted">WANTED</p>
       <p class="doa">Dead or alive</p>
-      <div class="portrait">${portrait(o)}</div>
-      <h2>${o.name}</h2>
-      <p class="alias">${o.alias}</p>
+      ${portraits(b, 150)}
+      <h2>${esc(b.name)}</h2>
+      <p class="alias">${esc(b.alias)}</p>
       <dl class="facts">
-        <div><dt>Draws in</dt><dd>~${o.react} ms</dd></div>
-        <div><dt>Aim</dt><dd>${Math.round(o.acc * 100)}%</dd></div>
-        <div><dt>Habit</dt><dd>${o.side > 0 ? 'Sidesteps' : 'Stands still'}</dd></div>
+        <div><dt>Draws in</dt><dd>~${b.react} ms</dd></div>
+        <div><dt>Aim</dt><dd>${Math.round(b.acc * 100)}%</dd></div>
+        <div><dt>Habit</dt><dd>${habit}</dd></div>
       </dl>
-      <p class="reward" style="margin-bottom:0!important">${money(o.reward)} Reward</p>
+      <p class="reward" style="margin-bottom:0!important">${money(payFor(b))} Reward</p>
+      ${replay ? '<p class="small" style="margin-top:6px">Already paid once. A second collection pays half.</p>' : ''}
     </article>
-    ${round ? `<p class="plaque slim">Bounty collected ${money(bounty)}</p>` : ''}</div>
-    ${signs('<button class="sign-btn wood" id="go">Step into the street</button><button class="sign-btn wood minor" id="home">Leave town</button>')}
-  </div>`, 'go', () => { sfx.init(); requestLock(); startDuel(); });
-  $('home').onclick = showTitle;
+    ${purse()}</div>
+    ${signs('<button class="sign-btn wood" id="go">Step into the street</button><button class="sign-btn wood minor" id="back">Back to the board</button>')}
+  </div>`, 'go', () => { sfx.init(); requestLock(); startDuel(b); });
+  $('back').onclick = () => showTown(b.town);
 }
-function showResult(won, pay) {
+
+function showWin(r) {
   setPlaying(false); vm.visible = false; say('');
-  if (won) {
-    const his = Math.round(out.firedAt !== null ? out.firedAt : out.fireAt);
-    showScreen(`<div class="saloon">
-      <div class="board wood pin"><article class="poster">
-        <div class="stamp">PAID</div>
-        <p class="wanted small">Bounty collected</p>
-        <h2>${cur.name}</h2>
-        <p class="alias">${headshot ? 'Headshot. The marshal adds half again.' : 'Dead in the street.'}</p>
-        <dl class="facts" style="margin-bottom:0">
-          <div><dt>Your shot</dt><dd>${Math.round(killMs)} ms</dd></div>
-          <div><dt>${out.firedAt !== null ? 'They fired at' : 'They\'d have fired'}</dt><dd>${his} ms</dd></div>
-          <div><dt>Payout</dt><dd>${money(pay)}</dd></div>
-        </dl>
-      </article>
-      <p class="plaque slim">Total bounty ${money(bounty)}</p></div>
-      ${signs(`<button class="sign-btn wood" id="go">${round + 1 === OUTLAWS.length ? 'More riders are coming' : 'Next poster'}</button>`)}
-    </div>`, 'go', () => { round++; showPoster(); });
-  } else {
-    const newBest = bounty > best;
-    if (newBest) { best = bounty; try { localStorage.setItem('sundown-best', String(best)); } catch (e) { } }
-    const why = deathCause === 'early'
-      ? `Drew before the bell against ${cur.name}.`
-      : `Outdrawn by ${cur.name} at ${Math.round(out.firedAt || 0)} ms.`;
-    showScreen(`<div class="saloon">
-      <div class="board wood grave">
-        <p class="eyebrow">Boot Hill</p>
-        <p class="carved" style="margin:6px 0 8px">Here lies a stranger</p>
-        <p class="alias">${why}</p>
-        <dl class="facts" style="margin-top:12px">
-          <div><dt>Outlaws</dt><dd>${kills}</dd></div>
-          <div><dt>Bounty</dt><dd>${money(bounty)}</dd></div>
-          <div><dt>Fastest</dt><dd>${runBest === null ? '—' : Math.round(runBest) + ' ms'}</dd></div>
-        </dl>
-        <p class="small">${newBest ? 'A new best bounty.' : (best ? 'Best bounty: ' + money(best) : '')}</p>
+  const b = cur, fired = outs.map(o => o.firedAt).filter(v => v !== null);
+  const their = fired.length ? Math.min(...fired) : Math.min(...outs.map(o => o.fireAt));
+  const head = r.unlocks ? hangSign('The road is open', `${r.unlocks.name}`, 'clamp(36px,10vw,56px)')
+    : r.finale ? hangSign('Every bounty in the territory', 'Paid in full', 'clamp(36px,10vw,56px)') : '';
+  const line = r.bonus ? `Head shots: +${money(r.bonus)} from the marshal.` : (outs.length > 1 ? 'Both of them, dead in the street.' : 'Dead in the street.');
+  showScreen(`<div class="saloon">
+    ${head}
+    <div class="board wood pin"><article class="poster">
+      <div class="stamp">PAID</div>
+      <p class="wanted small">Bounty collected</p>
+      <h2>${esc(b.name)}</h2>
+      <p class="alias">${line}</p>
+      <dl class="facts" style="margin-bottom:0">
+        <div><dt>Your shot</dt><dd>${Math.round(lastKillMs)} ms</dd></div>
+        <div><dt>${fired.length ? 'They fired at' : 'They\'d have fired'}</dt><dd>${Math.round(their)} ms</dd></div>
+        <div><dt>Payout</dt><dd>${money(r.pay)}</dd></div>
+      </dl>
+    </article>
+    ${purse()}</div>
+    ${signs(`${r.unlocks ? `<button class="sign-btn wood" id="next">Ride to ${r.unlocks.name}</button>` : ''}<button class="sign-btn wood${r.unlocks ? ' minor' : ''}" id="go">Back to the board</button><button class="sign-btn wood minor" id="store">General Store</button>`)}
+  </div>`, 'go', () => showTown(b.town));
+  if (r.unlocks) { const ti = TOWNS.indexOf(r.unlocks); $('next').onclick = () => showTown(ti); try { $('next').focus({ preventScroll: true }); } catch (e) { } }
+  $('store').onclick = () => showStore(() => showTown(b.town));
+}
+
+function showLoss() {
+  setPlaying(false); vm.visible = false; say('');
+  const b = cur;
+  const fee = Math.min(save.cash, Math.round(25 + save.cash * .1));
+  save.cash -= fee; persist();
+  const fired = outs.map(o => o.firedAt).filter(v => v !== null);
+  const why = deathCause === 'early'
+    ? `You drew before the bell, and ${b.gang ? 'they' : b.name} didn't wait to be asked.`
+    : `Outdrawn by ${b.name} at ${Math.round(fired.length ? Math.min(...fired) : 0)} ms.`;
+  showScreen(`<div class="saloon">
+    <div class="board wood">
+      <p class="plaque">The doc dug the lead out</p>
+      <p class="lede">${esc(why)} You woke up on Doc Halloway's table with a bandage and a bill.</p>
+      <dl class="facts">
+        <div><dt>Doctor's fee</dt><dd>${money(fee)}</dd></div>
+        <div><dt>Purse</dt><dd>${money(save.cash)}</dd></div>
+        <div><dt>Bounty</dt><dd>${money(payFor(b))}</dd></div>
+      </dl>
+    </div>
+    ${signs('<button class="sign-btn wood" id="go">Try again</button><button class="sign-btn wood minor" id="back">Back to the board</button><button class="sign-btn wood minor" id="store">General Store</button>')}
+  </div>`, 'go', () => { $('hurt').classList.remove('on'); deathCause = ''; showBounty(b); });
+  $('back').onclick = () => showTown(b.town);
+  $('store').onclick = () => showStore(() => showTown(b.town));
+}
+
+// The General Store: upgrades that carry through the campaign, plus revolvers and hats.
+function showStore(back, msg = '', keepScroll = false) {
+  toMenu();
+  const scroll = keepScroll ? overlay.scrollTop : 0;
+  const ladder = (key, list, title) => {
+    const lv = save[key], now = list[lv], next = list[lv + 1];
+    return `<section><h3>${title}</h3>
+      <div class="item"><span class="in">${now.name}</span><span class="id">${esc(now.desc)}</span><span class="tag">Owned</span></div>
+      ${next ? `<div class="item"><span class="in">${next.name}</span><span class="id">${esc(next.desc)}</span>
+        <button class="brass-btn" data-buy="${key}"${save.cash < next.cost ? ' disabled' : ''}>${money(next.cost)}</button></div>` : '<p class="small">Fully upgraded.</p>'}
+    </section>`;
+  };
+  const gunRows = Object.entries(GUNS).map(([id, g]) => {
+    const own = save.guns.includes(id), on = save.gun === id;
+    const btn = on ? '<span class="tag">Carrying</span>' : own ? `<button class="brass-btn" data-gun="${id}">Carry</button>`
+      : `<button class="brass-btn" data-gun="${id}"${save.cash < g.cost ? ' disabled' : ''}>${money(g.cost)}</button>`;
+    return `<div class="item"><span class="in"><i class="swatch" style="background:${hex(g.steel)}"></i>${g.name}</span><span class="id">${esc(g.desc)}</span>${btn}</div>`;
+  }).join('');
+  const hatRows = Object.entries(HATS).map(([id, h]) => {
+    const own = save.hats.includes(id), on = save.hat === id;
+    const btn = on ? '<span class="tag">Wearing</span>' : own ? `<button class="brass-btn" data-hat="${id}">Wear</button>`
+      : `<button class="brass-btn" data-hat="${id}"${save.cash < h.cost ? ' disabled' : ''}>${money(h.cost)}</button>`;
+    return `<div class="item"><span class="in"><svg class="hat-ico" viewBox="0 0 120 50" aria-hidden="true"><g transform="translate(0,-4)">${hatSvg(h.shape, hex(h.color))}</g></svg>${h.name}</span><span class="id">${esc(h.desc)}</span>${btn}</div>`;
+  }).join('');
+  showScreen(`<div class="saloon">
+    ${hangSign('Guns · Leather · Hats', 'General Store', 'clamp(36px,10vw,56px)')}
+    <div class="board wood">
+      <p class="plaque">Purse ${money(save.cash)}</p>
+      <p class="small" id="storemsg" style="min-height:1.2em;margin-bottom:8px">${esc(msg)}</p>
+      <div class="shop">
+        ${ladder('holster', HOLSTERS, 'Holster')}
+        ${ladder('hands', HANDS, 'Nerves')}
+        <section><h3>Revolvers</h3>${gunRows}</section>
+        <section><h3>Hats</h3><p class="small" style="margin-bottom:4px">Your friends see your hat when you duel them.</p>${hatRows}</section>
       </div>
-      ${signs('<button class="sign-btn wood" id="go">Ride again</button><button class="sign-btn wood minor" id="home">Leave town</button>')}
-    </div>`, 'go', () => { round = 0; bounty = 0; kills = 0; runBest = null; deathCause = ''; $('hurt').classList.remove('on'); showPoster(); });
-    $('home').onclick = showTitle;
-  }
+      <p class="small" style="margin-top:14px">Holsters, nerves and revolver handling only count when hunting bounties, so duels with friends stay even.</p>
+      <div class="erase" id="erase"><button class="linkish" id="erase-ask">Start the campaign over</button></div>
+    </div>
+    ${signs('<button class="sign-btn wood" id="go">Back</button>')}
+  </div>`, 'go', back);
+  overlay.scrollTop = scroll;
+  const done = (text) => { sfx.till(); persist(); showStore(back, text, true); };
+  overlay.querySelectorAll('[data-buy]').forEach(b => b.onclick = () => {
+    const key = b.dataset.buy, list = key === 'holster' ? HOLSTERS : HANDS, next = list[save[key] + 1];
+    if (!next || save.cash < next.cost) return;
+    save.cash -= next.cost; save[key]++; done(`Bought: ${next.name}.`);
+  });
+  overlay.querySelectorAll('[data-gun]').forEach(b => b.onclick = () => {
+    const id = b.dataset.gun, g = GUNS[id];
+    if (!save.guns.includes(id)) { if (save.cash < g.cost) return; save.cash -= g.cost; save.guns.push(id); save.gun = id; done(`Bought the ${g.name}. It's in your holster.`); }
+    else { save.gun = id; persist(); showStore(back, `Carrying the ${g.name}.`, true); }
+  });
+  overlay.querySelectorAll('[data-hat]').forEach(b => b.onclick = () => {
+    const id = b.dataset.hat, h = HATS[id];
+    if (!save.hats.includes(id)) { if (save.cash < h.cost) return; save.cash -= h.cost; save.hats.push(id); save.hat = id; done(`Bought the ${h.name}. Looks good on you.`); }
+    else { save.hat = id; persist(); showStore(back, `Wearing the ${h.name}.`, true); }
+  });
+  $('erase-ask').onclick = () => {
+    $('erase').innerHTML = `<p class="small">Erase your purse, upgrades and every paid bounty?</p>
+      <div class="row" style="justify-content:center;margin-top:6px"><button class="brass-btn" id="erase-yes">Erase everything</button><button class="brass-btn" id="erase-no">Keep my progress</button></div>`;
+    $('erase-no').onclick = () => showStore(back, '', true);
+    $('erase-yes').onclick = () => {
+      Object.assign(save, { cash: 0, done: {}, holster: 0, hands: 0, guns: ['colt'], gun: 'colt', hats: ['drifter'], hat: 'drifter', fastest: null, town: 0 });
+      persist(); showStore(back, 'Fresh start. Dry Gulch is waiting.');
+    };
+    try { $('erase-no').focus(); } catch (e) { }
+  };
 }
 
 /* ---------------- Live duels ----------------
@@ -1013,12 +1392,20 @@ function showResult(won, pay) {
    never makes anyone slower. The host (one of the two players) picks the
    bell delay, collects each player's hits, and announces the round winner. */
 const WIN_AT = 3, WALK_MS = 2200;
+// The same game hosted on GitHub Pages, where duels connect peer to peer and need no Claude access.
+const WEB_URL = 'https://buckbiggles.github.io/Sundown-Standoff/';
 const net = { duel: null, code: '', nick: '', me: null, opp: null, host: false, since: 0,
   n: 0, delay: 4000, score: {}, shotK: 0, lastResult: 0, hr: null, matchOver: false, rematch: new Set(),
   unsubs: [], timers: [], fx: new Set(), pose: '', poseAt: 0 };
-/* Peer-to-peer duel link (PeerJS). The free PeerJS service only introduces the
-   two browsers; after that, messages go directly between them. This object offers
-   the few calls the duel code uses: emit/on for messages, presence/peers/onPeers
+let roomPromise = null;
+function getRoom() {
+  if (!roomPromise) roomPromise = ON_CLAUDE ? window.claude.use('room').catch(() => null) : Promise.resolve(null);
+  return roomPromise;
+}
+
+/* Peer-to-peer duel link (PeerJS), used off claude.ai. The free PeerJS service only
+   introduces the two browsers; after that, messages go directly between them. This object
+   offers the few calls the duel code uses: emit/on for messages, presence/peers/onPeers
    for each player's name and pose, and leave. */
 function joinPeerDuel(code, create) {
   return new Promise((resolve, reject) => {
@@ -1113,8 +1500,26 @@ function joinPeerDuel(code, create) {
     };
   });
 }
-function peerErrorText(e) {
+// Open the duel's message channel: the live room on claude.ai, a peer link anywhere else.
+async function openDuelLink(code, create) {
+  if (ON_CLAUDE) {
+    const room = await getRoom();
+    if (!room) throw { code: 'no_room' };
+    try { return { d: await room.join('duel-' + code), code }; }
+    catch (e) { throw { code: e && e.code === 'not_permitted' ? 'not_permitted' : 'room_error' }; }
+  }
+  try { return { d: await joinPeerDuel(code, create), code }; }
+  catch (e) {
+    if (!(create && e && e.code === 'unavailable-id')) throw e;
+    const c2 = newCode();  // code already in use: pick another
+    return { d: await joinPeerDuel(c2, true), code: c2 };
+  }
+}
+function linkErrorText(e) {
   const c = e && e.code;
+  if (c === 'no_room') return 'This page couldn\'t open a live connection for you. Use the web version link below instead: it works for anyone.';
+  if (c === 'not_permitted') return 'Your access to this page doesn\'t allow live duels. Use the web version link below instead.';
+  if (c === 'room_error') return 'Couldn\'t reach that duel. Try again in a moment.';
   if (c === 'no_lib') return 'Couldn\'t load the connection library. Check your internet connection and reload the page.';
   if (c === 'peer-unavailable') return 'No duel is waiting with that code. Check the code, make sure your friend\'s waiting screen is still open, and that you\'re both on the same site (claude.ai codes don\'t work here).';
   if (c === 'no-direct') return 'Found the duel, but your two connections couldn\'t reach each other directly. This happens on some mobile, school and work networks. Try switching one of you to a different network, such as home Wi-Fi instead of mobile data.';
@@ -1122,10 +1527,10 @@ function peerErrorText(e) {
   if (c === 'browser-incompatible') return 'This browser can\'t make direct connections. Try a recent Chrome, Firefox, Edge or Safari.';
   return 'Couldn\'t reach the matchmaking service. Try again in a moment.';
 }
+
 const myScore = () => (net.me && net.score[net.me]) || 0;
 const oppScore = () => (net.opp && net.score[net.opp.peer]) || 0;
 const nickOf = p => (p && p.presence && typeof p.presence.nick === 'string' && p.presence.nick.trim().slice(0, 18)) || 'Stranger';
-const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 function later(fn, ms) { net.timers.push(setTimeout(fn, ms)); }
 function clearTimers() {
   net.timers.forEach(clearTimeout); net.timers = [];
@@ -1134,9 +1539,7 @@ function clearTimers() {
 function send(data) {
   if (!net.duel) return;
   net.duel.emit('duel', data).catch(e => {
-    if (e && e.code === 'not_permitted' && net.duel) {
-      showDuelLobby('Your access to this page doesn\'t allow live duels. Ask the owner to share it with you with edit access.');
-    }
+    if (e && e.code === 'not_permitted' && net.duel) showDuelLobby(linkErrorText({ code: 'not_permitted' }));
   });
 }
 function sendTwice(data) { send(data); later(() => send(data), 250); }  // rooms can drop a message; receivers ignore repeats
@@ -1154,10 +1557,7 @@ function newCode() {
 }
 
 function showDuelLobby(msg = '') {
-  if (net.duel) leaveDuel();
-  mode = 'solo'; state = 'menu'; setPlaying(false); vm.visible = false; say('');
-  document.body.classList.remove('tense'); $('hurt').classList.remove('on');
-  if (out) { scene.remove(out.g); out = null; }
+  toMenu(); setTown(0);
   showScreen(`<div class="saloon">
     <div class="board wood">
       <p class="plaque">Duel a friend</p>
@@ -1167,6 +1567,7 @@ function showDuelLobby(msg = '') {
       <p class="or">Joining a friend? Enter their code</p>
       <div class="row"><input id="code" maxlength="20" autocomplete="off" placeholder="dusk-482" aria-label="Duel code"><button class="brass-btn" id="join">Join</button></div>
       <p class="small" id="lobbymsg" style="margin-top:12px;min-height:1.2em">${esc(msg)}</p>
+      ${ON_CLAUDE ? `<p class="plaque slim"><a class="weblink" href="${WEB_URL}" target="_blank" rel="noopener">Friend can't connect? Duel on the web version</a></p>` : ''}
     </div>
     ${signs('<button class="sign-btn wood" id="go">Start a new duel</button><button class="sign-btn wood minor" id="back">Back</button>')}
   </div>`, 'go', () => enterDuel(newCode(), true));
@@ -1186,24 +1587,21 @@ async function enterDuel(raw, create) {
   try { localStorage.setItem('sundown-nick', net.nick); } catch (e) { }
   joining = true; lm.textContent = create ? 'Opening a duel…' : 'Riding into town…';
   try {
-    let d = null, finalCode = code, err = null;
-    try { d = await joinPeerDuel(code, create); } catch (e) { err = e; }
-    if (!d && create && err && err.code === 'unavailable-id') {  // code already in use: pick another
-      finalCode = newCode();
-      try { d = await joinPeerDuel(finalCode, true); } catch (e) { err = e; }
-    }
-    if (!d) { lm.textContent = peerErrorText(err); return; }
-    Object.assign(net, { duel: d, code: finalCode, me: null, opp: null, host: false, since: Date.now(), n: 0, score: {}, lastResult: 0,
+    let link;
+    try { link = await openDuelLink(code, create); }
+    catch (e) { lm.textContent = linkErrorText(e); return; }
+    const d = link.d;
+    Object.assign(net, { duel: d, code: link.code, me: null, opp: null, host: false, since: Date.now(), n: 0, score: {}, lastResult: 0,
       hr: null, matchOver: false, rematch: new Set(), fx: new Set(), pose: '' });
     mode = 'pvp';
     net.unsubs = [d.on('duel', onDuelMsg, onDuelError), d.onPeers(onDuelPeers, onDuelError)];
-    d.presence({ nick: net.nick, since: net.since, yaw: 0, pitch: 0, up: false }).catch(() => { });
+    d.presence({ nick: net.nick, since: net.since, hat: save.hat, yaw: 0, pitch: 0, up: false }).catch(() => { });
     showWaiting(create ? '' : 'Joining your friend…');
   } finally { joining = false; }
 }
 function onDuelError(e) {
   if (!net.duel) return;
-  showDuelLobby(e && e.code === 'full' ? peerErrorText(e) : 'Lost the connection to the duel.');
+  showDuelLobby(e && e.code === 'full' ? linkErrorText(e) : 'Lost the connection to the duel.');
 }
 function leaveDuel() {
   clearTimers();
@@ -1217,8 +1615,7 @@ function leaveDuel() {
 function showWaiting(msg = '') {
   state = 'menu'; setPlaying(false); vm.visible = false; say('');
   document.body.classList.remove('tense'); $('hurt').classList.remove('on');
-  if (out) { scene.remove(out.g); out = null; }
-  clearFlyers();
+  clearOutlaws(); clearFlyers();
   showScreen(`<div class="saloon">
     <div class="board wood">
       <p class="plaque">${esc(msg || 'Waiting for a challenger')}</p>
@@ -1307,11 +1704,14 @@ function onDuelMsg(msg) {
 
 function startPvpRound() {
   overlay.hidden = true;
+  setTown(0);
   const look = net.host
-    ? { coat: 0x8a6a3c, pants: 0x3a2e22, hat: 0x6e5a3a, band: 0x2f6a4a, skin: 0xc4936a }
-    : { coat: 0x1d1a1a, pants: 0x24201e, hat: 0x111010, band: 0x6a1414, skin: 0xd2b49a };
+    ? { coat: 0x8a6a3c, pants: 0x3a2e22, band: 0x2f6a4a, skin: 0xc4936a }
+    : { coat: 0x1d1a1a, pants: 0x24201e, band: 0x6a1414, skin: 0xd2b49a };
+  const hatId = HATS[net.opp.presence.hat] ? net.opp.presence.hat : 'drifter';
   deathCause = '';
-  startDuel({ name: nickOf(net.opp), alias: '', react: 0, acc: 0, reward: 0, side: 0, sway: .004 + nerves() * .009, fakes: 0, ...look });
+  startDuel({ name: nickOf(net.opp), alias: '', react: 0, acc: 0, reward: 0, side: 0, sway: .004 + nerves() * .009, fakes: 0,
+    ...look, hat: HATS[hatId].color, hatShape: HATS[hatId].shape });
 }
 
 function oppShotFx(d, peer) {
@@ -1425,10 +1825,7 @@ function showMatchOver(iWon, me, them, why) {
   setPlaying(false); vm.visible = false; say('');
   const name = cur.name;
   showScreen(`<div class="saloon">
-    <div class="hang"><div class="title-sign wood">
-      <p class="est">Duel ${esc(net.code)} · ${net.n} rounds</p>
-      <p class="carve" style="font-size:clamp(34px,10vw,52px)">${iWon ? 'You own this street' : esc(name) + ' owns this street'}</p>
-    </div></div>
+    ${hangSign(`Duel ${esc(net.code)} · ${net.n} rounds`, iWon ? 'You own this street' : esc(name) + ' owns this street', 'clamp(34px,10vw,52px)')}
     <div class="board wood">
       <p class="plaque">You ${me} – ${them} ${esc(name)}</p>
       <p class="alias">${esc(why)}</p>
@@ -1481,7 +1878,7 @@ document.addEventListener('pointerlockerror', () => {
 $('resume').onclick = () => { if (lockOK) requestLock(); else resume(); };
 $('quit').onclick = () => {
   paused = false; $('pause').hidden = true;
-  slowEnd = 0; clearFlyers();
+  slowEnd = 0;
   showTitle();  // also leaves a live duel
 };
 // Wind & ambience sliders (title screen and pause menu) share one saved setting.
@@ -1547,48 +1944,53 @@ canvas.addEventListener('touchend', e => {
   if (performance.now() - touch.time < 260 && touch.moved < 12) playerFire();
   touch = null;
 });
-window.addEventListener('resize', () => {
-  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth, innerHeight);
-});
+// Keep the camera matched to the window. A page that loads hidden can start at zero size,
+// which would leave the camera (and every shot's aim) broken, so this also runs each frame.
+let fitW = -1, fitH = -1;
+function fit() {
+  if (innerWidth === fitW && innerHeight === fitH) return;
+  fitW = innerWidth; fitH = innerHeight;
+  camera.aspect = fitW > 0 && fitH > 0 ? fitW / fitH : 16 / 9; camera.updateProjectionMatrix();
+  renderer.setSize(Math.max(1, fitW), Math.max(1, fitH));
+}
+window.addEventListener('resize', fit);
 
 /* ---------------- Update loop ---------------- */
-function updateOutlaw(dt) {
-  if (!out) return;
-  const g = out.g;
-  g.position.x += (out.tx - g.position.x) * Math.min(1, dt * 9);
-  if (out.alive) g.rotation.y = Math.atan2(-g.position.x, camera.position.z - g.position.z);
+function updateOutlaw(o, dt) {
+  const g = o.g;
+  g.position.x += (o.tx - g.position.x) * Math.min(1, dt * 9);
+  if (o.alive) g.rotation.y = Math.atan2(camera.position.x - g.position.x, camera.position.z - g.position.z);
   let aimPitch = 0;
   if (mode === 'pvp') {
     const p = (net.opp && net.opp.presence) || {};
     const y = Number(p.yaw) || 0;
     aimPitch = clamp(Number(p.pitch) || 0, -.5, .5);
-    if (out.alive) g.rotation.y = clamp(y, -1.2, 1.2) * .7;
+    if (o.alive) g.rotation.y = clamp(y, -1.2, 1.2) * .7;
     // They face us from the other end, so their right is our left.
-    out.tx = -clamp(Number(p.x) || 0, -STREET_HALF, STREET_HALF);
-    out.drawK += ((p.up ? 1 : 0) - out.drawK) * Math.min(1, dt * 14);
-  } else if (out.holster) out.drawK = Math.max(0, out.drawK - dt / .35);
-  else if (out.drawing) out.drawK = Math.min(1, out.drawK + dt / .18);
-  if (out.spinOn) {
-    out.spinT += dt;
-    const k = clamp(out.spinT / SPIN_S, 0, 1);
-    out.gunPivot.rotation.x = -spinEase(k) * Math.PI * 4;
-    if (k >= 1) { out.spinOn = false; out.holster = true; out.gunPivot.rotation.x = 0; }
+    o.tx = -clamp(Number(p.x) || 0, -STREET_HALF, STREET_HALF);
+    o.drawK += ((p.up ? 1 : 0) - o.drawK) * Math.min(1, dt * 14);
+  } else if (o.holster) o.drawK = Math.max(0, o.drawK - dt / .35);
+  else if (o.drawing) o.drawK = Math.min(1, o.drawK + dt / .18);
+  if (o.spinOn) {
+    o.spinT += dt;
+    const k = clamp(o.spinT / SPIN_S, 0, 1);
+    o.gunPivot.rotation.x = -spinEase(k) * Math.PI * 4;
+    if (k >= 1) { o.spinOn = false; o.holster = true; o.gunPivot.rotation.x = 0; }
   }
-  const dk = ease(clamp(out.drawK, 0, 1));
-  out.armR.rotation.x = -dk * (Math.PI / 2 - .05 + aimPitch);
-  out.armR.rotation.z = -.14 * (1 - dk);
-  if (!out.drawing && state === 'standoff') {
-    out.armR.rotation.z = -.14 + Math.sin(gt * .006) * .025 * (gt > standoffEnd - 1500 ? 2 : 1);
+  const dk = ease(clamp(o.drawK, 0, 1));
+  o.armR.rotation.x = -dk * (Math.PI / 2 - .05 + aimPitch);
+  o.armR.rotation.z = -.14 * (1 - dk);
+  if (!o.drawing && state === 'standoff') {
+    o.armR.rotation.z = -.14 + Math.sin(gt * .006 + o.base) * .025 * (gt > standoffEnd - 1500 ? 2 : 1);
   }
-  out.stagger *= Math.exp(-dt * 5);
-  g.rotation.z = Math.sin(gt * .03) * out.stagger;
-  if (!out.alive) {
-    const k = clamp((gt - out.fallT) / 650, 0, 1);
+  o.stagger *= Math.exp(-dt * 5);
+  g.rotation.z = Math.sin(gt * .03) * o.stagger;
+  if (!o.alive) {
+    const k = clamp((gt - o.fallT) / 650, 0, 1);
     g.rotation.x = -k * k * 1.52;
-    out.armR.rotation.x *= .92;
+    o.armR.rotation.x *= .92;
   } else if (state === 'walk') {
-    g.position.y = Math.abs(Math.sin(gt * .008)) * .04;
+    g.position.y = Math.abs(Math.sin(gt * .008 + o.base)) * .04;
   } else g.position.y = 0;
 }
 // Victory twirl: two turns of the revolver around the trigger finger, then it goes back in the holster.
@@ -1596,7 +1998,7 @@ const SPIN_S = 1.1, SPIN_DELAY = .45;
 let spinOn = false, spinT = 0, holstered = false;
 const spinEase = k => 1 - (1 - k) * (1 - k);  // fast flick, slowing to a stop
 function startSpin() { spinOn = true; spinT = -SPIN_DELAY; holstered = false; }
-function outlawSpin() { if (out) { out.spinOn = true; out.spinT = -SPIN_DELAY; out.holster = false; } }
+function outlawSpin() { for (const o of outs) if (o.alive) { o.spinOn = true; o.spinT = -SPIN_DELAY; o.holster = false; } }
 function updateVM(rdt) {
   if (spinOn) {
     const before = spinT;
@@ -1611,7 +2013,7 @@ function updateVM(rdt) {
   recoil *= Math.exp(-rdt * 10);
   let spin = 0;
   if (reloading) {
-    const k = (gt - reloadT) / RELOAD_MS;
+    const k = (gt - reloadT) / reloadMs();
     spin = Math.sin(clamp(k, 0, 1) * Math.PI);
     if (k >= 1) { reloading = false; ammo = 6; updateHud(); }
   }
@@ -1621,6 +2023,9 @@ function updateVM(rdt) {
   vFlash.visible = vFlashT > 0; vFlash.material.rotation = Math.random() * 6;
   vLight.intensity = vFlashT > 0 ? 2.2 : 0;
   oFlashT -= rdt; oFlash.visible = oFlashT > 0;
+  // The Buntline's long barrel gives a closer look while it's drawn.
+  const fov = campaign() && gunNow().zoom && state === 'draw' && gunLift > .5 ? 50 : BASE_FOV;
+  if (Math.abs(camera.fov - fov) > .05) { camera.fov += (fov - camera.fov) * Math.min(1, rdt * 8); camera.updateProjectionMatrix(); }
 }
 
 function update(dt, rdt) {
@@ -1632,15 +2037,15 @@ function update(dt, rdt) {
   } else {
     let eyeY = EYE, roll = 0, tilt = 0;
     if (state === 'walk') {
-      const k = clamp((gt - stateT) / 2200, 0, 1), e = ease(k);
+      const k = clamp((gt - stateT) / WALK_MS, 0, 1), e = ease(k);
       camera.position.z = 5 * (1 - e);
       eyeY = EYE + Math.abs(Math.sin(k * Math.PI * 5)) * .04 * (1 - k);
-      out.g.position.z = OUT_Z - 5 * (1 - e);
+      for (const o of outs) o.g.position.z = OUT_Z - 5 * (1 - e);
       if (k >= 1) beginStandoff();
     } else if (state === 'standoff') {
       if (gt >= nextBeat) {
-        // Heart starts faster and louder each round, and speeds up as the bell nears.
-        const tension = clamp((gt - stateT) / (standoffEnd - stateT), 0, 1), nv = nerves();
+        // Heart starts faster and louder with each tougher bounty, and speeds up as the bell nears.
+        const tension = clamp((gt - stateT) / (standoffEnd - stateT), 0, 1), nv = nerves() * handsMul();
         sfx.thump(.22 + tension * .25 + nv * .25);
         beatKick = .0015 + nv * .005;
         const v = $('pulse');
@@ -1653,13 +2058,16 @@ function update(dt, rdt) {
         puff(new THREE.Vector3(s * 5.4, 1, rand(-12, -2)), 0xd8b088, 6, .6, .4, 1, .6, 0, .5);
       }
       if (gt >= standoffEnd) callDraw();
-    } else if (state === 'draw' && mode === 'solo' && out.alive) {
+    } else if (state === 'draw' && mode === 'solo') {
       const t = gt - drawT0;
-      if (!out.drawing && t >= out.fireAt - 180) {
-        out.drawing = true;
-        if (!out.forceHit && Math.random() < cur.side) out.tx = (Math.random() < .5 ? -1 : 1) * rand(1, 1.9);
+      for (const o of outs) {
+        if (!o.alive) continue;
+        if (!o.drawing && t >= o.fireAt - 180) {
+          o.drawing = true;
+          if (!o.forceHit && Math.random() < o.side) o.tx = o.base + (Math.random() < .5 ? -1 : 1) * rand(1, 1.9);
+        }
+        if (t >= o.fireAt) { outlawFire(o); if (state !== 'draw') break; }
       }
-      if (t >= out.fireAt) outlawFire();
     } else if (state === 'lost' && !deathHead) {
       // Buckle to the knees, then topple forward into the dirt, eyes still on the shooter.
       const t = (gt - deathT) / 1000;
@@ -1687,14 +2095,15 @@ function update(dt, rdt) {
       roll -= moveV * .012;
     }
     camera.position.x = playerX;
-    const amp = state === 'lost' ? 0 : cur ? cur.sway * (state === 'draw' ? 1.4 : 1) : .002;
+    const steady = campaign() ? handsMul() * gunNow().sway : 1;
+    const amp = state === 'lost' ? 0 : cur ? cur.sway * (state === 'draw' ? 1.4 : 1) * steady : .002;
     const sx = (Math.sin(swayT * 1.1) + .5 * Math.sin(swayT * 2.9 + 1)) * amp;
     beatKick *= Math.exp(-dt * 12);
     const sy = (Math.sin(swayT * 1.6 + 2) + .4 * Math.sin(swayT * 3.7)) * amp * .7 + beatKick;
     camera.position.y = eyeY;
     camera.rotation.set(pitch + sy + tilt, yaw + sx, roll);
   }
-  updateOutlaw(dt);
+  for (const o of outs) updateOutlaw(o, dt);
   updateVM(rdt);
   updateParticles(dt);
   updateFlyers(dt);
@@ -1708,16 +2117,20 @@ function frame(now) {
   if (paused && mode === 'solo') rdt = 0;
   const dt = rdt * (now < slowEnd ? .3 : 1);
   gt += dt * 1000;
+  fit();
   update(dt, rdt);
   if (mode === 'pvp') sharePose(now);
   renderer.render(scene, camera);
 }
 
+// Test hook, only on a local dev server.
+if (location.hostname === 'localhost') window.__sd = { scene, camera, envGroup, get outs() { return outs; }, get state() { return state; } };
+applySky(TOWNS[save.town]);
 showTitle();
 const fontsReady = document.fonts && document.fonts.load
   ? Promise.race([Promise.all([document.fonts.load('60px "Rye"'), document.fonts.load('16px "Special Elite"')]), new Promise(r => setTimeout(r, 2000))])
   : Promise.resolve();
-fontsReady.catch(() => { }).then(() => { buildTown(); });
+fontsReady.catch(() => { }).then(() => { fontsDone = true; setTown(townWanted); });
 requestAnimationFrame(frame);
 })();
 </script>
